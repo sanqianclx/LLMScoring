@@ -67,6 +67,10 @@ public class InMemoryPlatformRepository {
                 .toList();
     }
 
+    public void deleteCourse(UUID courseId) {
+        courses.remove(courseId);
+    }
+
     public ExamPaper savePaper(ExamPaper paper) {
         papers.put(paper.id(), paper);
         return paper;
@@ -86,6 +90,12 @@ public class InMemoryPlatformRepository {
         return papers.values().stream()
                 .filter(paper -> paper.teacherId().equals(teacherId))
                 .sorted(Comparator.comparing(ExamPaper::updatedAt).reversed())
+                .toList();
+    }
+
+    public List<ExamPaper> listPapersByCourse(UUID courseId) {
+        return papers.values().stream()
+                .filter(paper -> paper.courseId().equals(courseId))
                 .toList();
     }
 
@@ -135,8 +145,8 @@ public class InMemoryPlatformRepository {
         Course demoCourse = saveCourse(new Course(
                 UUID.randomUUID(),
                 demoTeacher.id(),
-                "高中生物必修一",
-                "围绕细胞结构、光合作用与呼吸作用设计的演示课程。",
+                "高中生物核心知识",
+                "围绕细胞结构与光合作用的核心单元。",
                 now
         ));
 
@@ -144,25 +154,25 @@ public class InMemoryPlatformRepository {
                 new Question(
                         UUID.randomUUID(),
                         QuestionType.FILL_BLANK,
-                        "光合作用主要发生在植物细胞的哪个细胞器中？",
+                        "植物细胞中主要进行光合作用的细胞器是什么？",
                         "叶绿体",
                         10,
                         List.of(
-                                new ScoringPoint(UUID.randomUUID(), "叶绿体|chloroplast", 10, "指出光合作用发生场所是叶绿体")
+                                new ScoringPoint(UUID.randomUUID(), "chloroplast|叶绿体", 10, "能够准确指出叶绿体。")
                         )
                 ),
                 new Question(
                         UUID.randomUUID(),
                         QuestionType.SHORT_ANSWER,
-                        "简述光合作用的基本条件和主要产物。",
-                        "光合作用需要光照、水和二氧化碳，主要产物包括有机物（如葡萄糖）和氧气。",
+                        "简述光合作用的基本条件与主要产物。",
+                        "光合作用需要光照、水和二氧化碳，产物为有机物和氧气。",
                         20,
                         List.of(
-                                new ScoringPoint(UUID.randomUUID(), "光照|阳光", 4, "提到光合作用需要光照"),
-                                new ScoringPoint(UUID.randomUUID(), "水|H2O", 4, "提到水是反应原料"),
-                                new ScoringPoint(UUID.randomUUID(), "二氧化碳|CO2", 4, "提到二氧化碳是反应原料"),
-                                new ScoringPoint(UUID.randomUUID(), "有机物|葡萄糖", 4, "提到产物包含有机物或葡萄糖"),
-                                new ScoringPoint(UUID.randomUUID(), "氧气|O2", 4, "提到产物包含氧气")
+                                new ScoringPoint(UUID.randomUUID(), "light|sunlight|光照", 4, "提到光照是必要条件。"),
+                                new ScoringPoint(UUID.randomUUID(), "water|H2O|水", 4, "提到水是反应物。"),
+                                new ScoringPoint(UUID.randomUUID(), "carbon dioxide|CO2|二氧化碳", 4, "提到二氧化碳是反应物。"),
+                                new ScoringPoint(UUID.randomUUID(), "organic matter|glucose|有机物|葡萄糖", 4, "提到有机物或葡萄糖是产物。"),
+                                new ScoringPoint(UUID.randomUUID(), "oxygen|O2|氧气", 4, "提到氧气是产物。")
                         )
                 )
         );
@@ -171,8 +181,8 @@ public class InMemoryPlatformRepository {
                 UUID.randomUUID(),
                 demoTeacher.id(),
                 demoCourse.id(),
-                "细胞与光合作用单元测评",
-                "演示用试卷：支持学生提交、自动评分与教师审核。",
+                "光合作用单元测评",
+                "用于演示学生提交、自动评分和教师审核的示例试卷。",
                 "BIO-2026",
                 true,
                 questions,

@@ -55,6 +55,11 @@ public class PlatformController {
         return platformService.createCourse(teacherId, request);
     }
 
+    @DeleteMapping("/teachers/{teacherId}/courses/{courseId}")
+    public void deleteCourse(@PathVariable UUID teacherId, @PathVariable UUID courseId) {
+        platformService.deleteCourse(teacherId, courseId);
+    }
+
     @PostMapping("/teachers/{teacherId}/papers")
     public ApiModels.PaperView createPaper(@PathVariable UUID teacherId,
                                            @RequestBody ApiModels.PaperRequest request) {
