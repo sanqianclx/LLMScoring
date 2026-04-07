@@ -1,17 +1,17 @@
 package com.llm.open.llmscoring.service;
 
-import com.llm.open.llmscoring.model.Course;
-import com.llm.open.llmscoring.model.ExamPaper;
-import com.llm.open.llmscoring.model.Question;
-import com.llm.open.llmscoring.model.QuestionScore;
-import com.llm.open.llmscoring.model.QuestionType;
-import com.llm.open.llmscoring.model.ScoringPoint;
-import com.llm.open.llmscoring.model.StudentAnswer;
-import com.llm.open.llmscoring.model.Submission;
-import com.llm.open.llmscoring.model.SubmissionStatus;
-import com.llm.open.llmscoring.model.Teacher;
-import com.llm.open.llmscoring.repository.InMemoryPlatformRepository;
-import com.llm.open.llmscoring.web.ApiModels;
+import com.llm.open.llmscoring.dto.Course;
+import com.llm.open.llmscoring.dto.ExamPaper;
+import com.llm.open.llmscoring.dto.Question;
+import com.llm.open.llmscoring.dto.QuestionScore;
+import com.llm.open.llmscoring.dto.QuestionType;
+import com.llm.open.llmscoring.dto.ScoringPoint;
+import com.llm.open.llmscoring.dto.StudentAnswer;
+import com.llm.open.llmscoring.dto.Submission;
+import com.llm.open.llmscoring.dto.SubmissionStatus;
+import com.llm.open.llmscoring.dto.Teacher;
+import com.llm.open.llmscoring.repository.PlatformRepository;
+import com.llm.open.llmscoring.dto.ApiModels;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,19 +28,19 @@ import java.util.UUID;
 @Service
 public class PlatformService {
 
-    private final InMemoryPlatformRepository repository;
+    private final PlatformRepository repository;
     private final HeuristicScoringService scoringService;
 
-    public PlatformService(InMemoryPlatformRepository repository, HeuristicScoringService scoringService) {
+    public PlatformService(PlatformRepository repository, HeuristicScoringService scoringService) {
         this.repository = repository;
         this.scoringService = scoringService;
     }
 
     public ApiModels.BootstrapView bootstrap() {
         Teacher demoTeacher = repository.findTeacherByUsername("teacher")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "默认教师账号数据缺失"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Default teacher data is missing"));
         return new ApiModels.BootstrapView(
-                "已加载本地演示账号。",
+                "Local development account loaded.",
                 toTeacherView(demoTeacher),
                 "BIO-2026",
                 repository.listTeachers().stream().map(this::toTeacherView).toList()
@@ -48,14 +48,14 @@ public class PlatformService {
     }
 
     public ApiModels.TeacherView registerTeacher(ApiModels.RegisterTeacherRequest request) {
-        requireNonBlank(request.name(), "教师姓名不能为空");
-        requireNonBlank(request.username(), "用户名不能为空");
-        requireNonBlank(request.password(), "密码不能为空");
-        requireNonBlank(request.school(), "学校不能为空");
-        requireNonBlank(request.taughtCourse(), "至少填写一门任教课程");
+        requireNonBlank(request.name(), "Teacher name is required");
+        requireNonBlank(request.username(), "Username is required");
+        requireNonBlank(request.password(), "Password is required");
+        requireNonBlank(request.school(), "School is required");
+        requireNonBlank(request.taughtCourse(), "At least one taught course is required");
 
         repository.findTeacherByUsername(request.username()).ifPresent(existing -> {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "用户名已存在");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
         });
 
         Teacher teacher = repository.saveTeacher(new Teacher(
@@ -73,7 +73,7 @@ public class PlatformService {
     public ApiModels.TeacherDashboardView login(ApiModels.LoginRequest request) {
         Teacher teacher = repository.findTeacherByUsername(trimmed(request.username()))
                 .filter(found -> Objects.equals(found.password(), trimmed(request.password())))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用户名或密码错误"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
         return getTeacherDashboard(teacher.id());
     }
 
@@ -115,7 +115,7 @@ public class PlatformService {
 
     public ApiModels.CourseView createCourse(UUID teacherId, ApiModels.CourseRequest request) {
         getTeacher(teacherId);
-        requireNonBlank(request.name(), "课程名称不能为空");
+        requireNonBlank(request.name(), "Course name is required");
         Course course = repository.saveCourse(new Course(
                 UUID.randomUUID(),
                 teacherId,
@@ -130,9 +130,9 @@ public class PlatformService {
         getTeacher(teacherId);
         Course course = repository.findCourse(courseId)
                 .filter(item -> item.teacherId().equals(teacherId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到课程"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
         if (!repository.listPapersByCourse(course.id()).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "请先删除该课程下的试卷，再删除课程");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Remove papers under this course before deleting it");
         }
         repository.deleteCourse(course.id());
     }
@@ -153,17 +153,17 @@ public class PlatformService {
     public ApiModels.StudentPaperView getStudentPaper(String shareCode) {
         ExamPaper paper = repository.findPaperByShareCode(trimmed(shareCode))
                 .filter(ExamPaper::active)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到试卷，或试卷已停用"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Paper not found or inactive"));
         return toStudentPaperView(paper);
     }
 
     public ApiModels.SubmissionView submitAnswers(String shareCode, ApiModels.SubmissionRequest request) {
-        requireNonBlank(request.studentId(), "学号不能为空");
+        requireNonBlank(request.studentId(), "Student id is required");
         ExamPaper paper = repository.findPaperByShareCode(trimmed(shareCode))
                 .filter(ExamPaper::active)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "分享码无效"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid share code"));
         Course course = repository.findCourse(paper.courseId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到课程"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
 
         Map<UUID, String> answerMap = new HashMap<>();
         if (request.answers() != null) {
@@ -190,7 +190,7 @@ public class PlatformService {
                 paper.courseId(),
                 paper.shareCode(),
                 request.studentId().trim(),
-                defaultIfBlank(request.studentName(), "未命名学生"),
+                defaultIfBlank(request.studentName(), "Unnamed Student"),
                 answers,
                 autoScores,
                 autoScores,
@@ -206,13 +206,13 @@ public class PlatformService {
 
     public ApiModels.StudentResultView getStudentResult(String shareCode, String studentId) {
         Submission submission = repository.findLatestSubmission(trimmed(shareCode), trimmed(studentId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到提交记录"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Submission record not found"));
         ExamPaper paper = repository.findPaper(submission.paperId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到试卷"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Paper not found"));
 
         if (submission.status() != SubmissionStatus.REVIEWED) {
             return new ApiModels.StudentResultView(
-                    "已提交答卷，教师尚未发布审核结果。",
+                    "Submission received. The teacher has not published the reviewed result yet.",
                     submission.status(),
                     submission.finalTotal(),
                     submission.overallFeedback(),
@@ -222,7 +222,7 @@ public class PlatformService {
         }
 
         return new ApiModels.StudentResultView(
-                "教师已完成审核，现在可查看最终成绩。",
+                "Review finished. Final scores are now available.",
                 submission.status(),
                 submission.finalTotal(),
                 submission.overallFeedback(),
@@ -233,12 +233,12 @@ public class PlatformService {
 
     public ApiModels.SubmissionView reviewSubmission(UUID teacherId, UUID submissionId, ApiModels.ReviewSubmissionRequest request) {
         Submission submission = repository.findSubmission(submissionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到提交记录"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Submission not found"));
         if (!submission.teacherId().equals(teacherId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "无权审核该提交记录");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot review this submission");
         }
         ExamPaper paper = repository.findPaper(submission.paperId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到试卷"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Paper not found"));
 
         Map<UUID, ApiModels.QuestionReviewRequest> reviewMap = new HashMap<>();
         if (request.questionReviews() != null) {
@@ -284,17 +284,17 @@ public class PlatformService {
 
     private ApiModels.PaperView savePaper(UUID existingPaperId, UUID teacherId, ApiModels.PaperRequest request) {
         getTeacher(teacherId);
-        requireNonBlank(request.title(), "试卷标题不能为空");
+        requireNonBlank(request.title(), "Paper title is required");
         if (request.courseId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "试卷必须归属某门课程");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paper must belong to a course");
         }
         Course course = repository.findCourse(request.courseId())
                 .filter(item -> item.teacherId().equals(teacherId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到课程"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
 
         List<Question> questions = mapQuestions(request.questions());
         if (questions.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "试卷至少包含一道题目");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paper must contain at least one question");
         }
 
         ExamPaper existing = existingPaperId == null ? null : getPaperOwnedByTeacher(teacherId, existingPaperId);
@@ -345,10 +345,10 @@ public class PlatformService {
             if (request == null) {
                 continue;
             }
-            requireNonBlank(request.text(), "题目内容不能为空");
+            requireNonBlank(request.text(), "Question text is required");
             double maxScore = request.maxScore() == null ? 0 : request.maxScore();
             if (maxScore <= 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "题目分值必须大于 0");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Question max score must be greater than 0");
             }
 
             List<ScoringPoint> scoringPoints = new ArrayList<>();
@@ -359,7 +359,7 @@ public class PlatformService {
                     }
                     double pointScore = pointRequest.score() == null ? 0 : pointRequest.score();
                     if (pointScore <= 0) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "评分点分值必须大于 0");
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scoring point score must be greater than 0");
                     }
                     scoringPoints.add(new ScoringPoint(
                             UUID.randomUUID(),
@@ -384,13 +384,13 @@ public class PlatformService {
 
     private Teacher getTeacher(UUID teacherId) {
         return repository.findTeacher(teacherId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到教师"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found"));
     }
 
     private ExamPaper getPaperOwnedByTeacher(UUID teacherId, UUID paperId) {
         return repository.findPaper(paperId)
                 .filter(paper -> paper.teacherId().equals(teacherId))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "未找到试卷"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Paper not found"));
     }
 
     private ApiModels.TeacherView toTeacherView(Teacher teacher) {
@@ -539,4 +539,3 @@ public class PlatformService {
         return Math.round(value * 10.0) / 10.0;
     }
 }
-

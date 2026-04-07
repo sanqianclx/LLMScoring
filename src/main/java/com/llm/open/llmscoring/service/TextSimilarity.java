@@ -20,7 +20,7 @@ public class TextSimilarity {
 
     public boolean containsKeyword(String answer, String keyword) {
         String normalizedAnswer = normalize(answer);
-        for (String alias : keyword.split("[|/、,，;；]")) {
+        for (String alias : splitAliases(keyword)) {
             String normalizedAlias = normalize(alias);
             if (!normalizedAlias.isBlank() && normalizedAnswer.contains(normalizedAlias)) {
                 return true;
@@ -32,7 +32,7 @@ public class TextSimilarity {
     public double bestAliasSimilarity(String answer, String keyword) {
         String normalizedAnswer = normalize(answer);
         double best = 0;
-        for (String alias : keyword.split("[|/、,，;；]")) {
+        for (String alias : splitAliases(keyword)) {
             String normalizedAlias = normalize(alias);
             if (normalizedAlias.isBlank()) {
                 continue;
@@ -40,6 +40,13 @@ public class TextSimilarity {
             best = Math.max(best, diceCoefficient(normalizedAnswer, normalizedAlias));
         }
         return best;
+    }
+
+    private String[] splitAliases(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return new String[0];
+        }
+        return keyword.split("[|/,，、；;]");
     }
 
     private double diceCoefficient(String left, String right) {
@@ -64,8 +71,8 @@ public class TextSimilarity {
             bigrams.add(text);
             return bigrams;
         }
-        for (int i = 0; i < text.length() - 1; i++) {
-            bigrams.add(text.substring(i, i + 2));
+        for (int index = 0; index < text.length() - 1; index++) {
+            bigrams.add(text.substring(index, index + 2));
         }
         return bigrams;
     }

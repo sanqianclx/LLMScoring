@@ -1,9 +1,9 @@
 package com.llm.open.llmscoring.service;
 
-import com.llm.open.llmscoring.model.Question;
-import com.llm.open.llmscoring.model.QuestionScore;
-import com.llm.open.llmscoring.model.QuestionType;
-import com.llm.open.llmscoring.model.ScoringPoint;
+import com.llm.open.llmscoring.dto.Question;
+import com.llm.open.llmscoring.dto.QuestionScore;
+import com.llm.open.llmscoring.dto.QuestionType;
+import com.llm.open.llmscoring.dto.ScoringPoint;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class HeuristicScoringService {
             double similarity = textSimilarity.bestAliasSimilarity(safeAnswer, question.referenceAnswer());
             score = round(question.maxScore() * similarity);
             String comment = similarity >= 0.85
-                    ? "答案与参考答案高度一致，表达较准确。"
+                    ? "答案与参考答案高度一致，表述较准确。"
                     : similarity >= 0.55
                     ? "答案与参考答案有一定接近，但还可以更完整。"
                     : "答案与参考答案差距较大，建议回顾相关知识点。";
@@ -36,10 +36,10 @@ public class HeuristicScoringService {
                     question.id(),
                     clamp(score, question.maxScore()),
                     question.maxScore(),
-                    List.of("参考答案相似度：" + percentage(similarity)),
+                    List.of("参考答案相似度: " + percentage(similarity)),
                     List.of(),
                     comment,
-                    "课程场景：" + courseName + "；采用参考答案相似度进行基础评分。",
+                    "课程场景: " + courseName + "；采用参考答案相似度进行基础评分。",
                     false
             );
         }
@@ -55,7 +55,7 @@ public class HeuristicScoringService {
                 double partial = round(point.score() * fuzzyWeight(question.type()));
                 score += partial;
                 matchedPoints.add(point.description() + "（语义接近，+" + partial + "）");
-                missingPoints.add("该要点表述不够精确，可进一步明确：" + point.keyword());
+                missingPoints.add("该要点表述不够精确，可进一步明确: " + point.keyword());
             } else {
                 missingPoints.add(point.description() + "（未覆盖，-" + point.score() + "）");
             }
@@ -86,10 +86,10 @@ public class HeuristicScoringService {
             return "整体表现非常扎实，关键知识点覆盖完整，可以继续提升表述的精炼度。";
         }
         if (ratio >= 0.7) {
-            return "整体掌握较好，主干知识点已经覆盖，建议补强遗漏细节与术语准确性。";
+            return "整体掌握较好，主要知识点已经覆盖，建议补强细节和术语准确性。";
         }
         if (ratio >= 0.5) {
-            return "已有部分知识点基础，但覆盖还不够全面，建议结合评分依据逐项查漏补缺。";
+            return "已具备部分基础，但覆盖还不够全面，建议结合评分依据逐项查漏补缺。";
         }
         return "当前答案与目标知识点仍有较大差距，建议回到课程内容重新梳理核心概念。";
     }
@@ -125,11 +125,11 @@ public class HeuristicScoringService {
 
     private String buildRationale(String courseName, Question question, List<String> matchedPoints, List<String> missingPoints) {
         List<String> parts = new ArrayList<>();
-        parts.add("课程上下文：" + courseName);
-        parts.add("题型：" + (question.type() == QuestionType.FILL_BLANK ? "填空题" : "简答题"));
-        parts.add(matchedPoints.isEmpty() ? "命中得分点：暂无。" : "命中得分点：" + String.join("；", matchedPoints));
+        parts.add("课程上下文: " + courseName);
+        parts.add("题型: " + (question.type() == QuestionType.FILL_BLANK ? "填空题" : "简答题"));
+        parts.add(matchedPoints.isEmpty() ? "命中得分点: 暂无。" : "命中得分点: " + String.join("；", matchedPoints));
         if (!missingPoints.isEmpty()) {
-            parts.add("失分原因：" + String.join("；", missingPoints));
+            parts.add("失分原因: " + String.join("；", missingPoints));
         }
         return String.join(" ", parts);
     }
