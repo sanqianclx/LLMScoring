@@ -1,0 +1,23 @@
+请按“简答题”标准评分。
+
+课程名称：{{courseName}}
+题型：{{questionType}}
+题目内容：{{questionText}}
+题目满分：{{maxScore}}
+参考答案：{{referenceAnswer}}
+关键得分点：
+{{scoringPoints}}
+
+学生答案：
+{{studentAnswer}}
+
+评分要求：
+1. 先判断学生答案是否覆盖关键知识点。
+2. 再判断这些知识点之间的逻辑链是否完整，例如条件、过程、因果、结果是否说清楚。
+3. 最后判断术语和表述是否准确，是否存在明显概念错误。
+4. knowledgeScore 范围 0-10，logicScore 范围 0-3，expressionScore 范围 0-1。
+5. finalScore 必须换算到题目满分 {{maxScore}} 范围内。
+6. matchedPoints 和 missingPoints 请尽量贴近教师视角，便于复核。
+7. comment 要简短明确，rationale 要说明给分依据。
+
+请只返回 JSON。

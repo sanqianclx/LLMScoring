@@ -29,9 +29,9 @@ import java.util.UUID;
 public class PlatformService {
 
     private final PlatformRepository repository;
-    private final HeuristicScoringService scoringService;
+    private final ScoringService scoringService;
 
-    public PlatformService(PlatformRepository repository, HeuristicScoringService scoringService) {
+    public PlatformService(PlatformRepository repository, ScoringService scoringService) {
         this.repository = repository;
         this.scoringService = scoringService;
     }

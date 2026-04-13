@@ -1,0 +1,23 @@
+请按“填空题”标准评分。
+
+课程名称：{{courseName}}
+题型：{{questionType}}
+题目内容：{{questionText}}
+题目满分：{{maxScore}}
+参考答案：{{referenceAnswer}}
+关键得分点：
+{{scoringPoints}}
+
+学生答案：
+{{studentAnswer}}
+
+评分要求：
+1. 重点判断学生答案是否命中标准术语、别名或同义表达。
+2. 如果学生答案和参考答案等价，即使表述不完全一致，也可以给高分。
+3. knowledgeScore 主要看知识点匹配度。
+4. logicScore 对填空题权重较低，除非题目需要多个条件同时成立。
+5. expressionScore 主要看术语是否准确、是否出现明显错误概念。
+6. finalScore 必须换算到题目满分 {{maxScore}} 范围内。
+7. matchedPoints 和 missingPoints 请分别列出已覆盖和未覆盖的关键点。
+
+请只返回 JSON。
