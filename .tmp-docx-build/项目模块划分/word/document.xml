@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
+  <w:body>
+    <w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t>项目模块划分</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">本文档根据原始需求说明整理，目的是把“项目要做什么”拆成清晰的功能模块，便于汇报、开发分工和后续迭代。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>1. 项目目标</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">本项目为“基于 LLM 的自动评分教学系统”。系统面向教师和学生两类用户，支持教师创建课程与试卷，学生通过分享码在线答题，系统对填空题与简答题进行自动评分，并允许教师对结果进行人工审核、修改和发布。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>2. 总体模块划分</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">项目可以划分为 7 个一级模块：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">1. 教师账号与个人信息模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">2. 课程管理模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">3. 试卷管理与分享模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">4. 学生答题模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">5. 自动评分模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">6. 教师审核与结果发布模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">7. 数据存储与系统支撑模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>3. 各模块详细说明</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.1 教师账号与个人信息模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持教师注册与登录</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持教师维护个人信息</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持记录教师所属学校和任教课程</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">核心功能：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师注册</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师登录</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师资料查看与修改</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师基本身份信息维护</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输入信息：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师姓名</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 用户名或邮箱</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 登录密码</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 所属学校</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 任教课程</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输出结果：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师基础账户信息</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师工作台入口</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.2 课程管理模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 让教师按课程组织试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持课程信息的新增、查看和删除</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">核心功能：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 创建课程</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 查看课程列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 删除课程</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 通过课程归类试卷</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输入信息：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程名称</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程描述</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 所属教师</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输出结果：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程详情数据</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.3 试卷管理与分享模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持教师创建和维护试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持为试卷配置题目、参考答案和评分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持为试卷生成分享码，供学生进入答题</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">核心功能：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 创建试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 编辑试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 删除试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 添加题目</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 配置评分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 控制试卷开放状态</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 生成试卷分享码</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">题目支持：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 填空题</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 简答题</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">每道题的配置内容：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目文本</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 参考答案</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 关键词或得分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每个得分点的分值</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目总分</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输出结果：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 试卷详情</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 分享码</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生可访问的试卷视图</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.4 学生答题模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生无需注册即可答题</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 通过教师发放的分享码访问试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 填写学号后完成答题和提交</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">核心功能：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 根据分享码获取试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 填写学号和姓名</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 在线作答</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 提交答卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 查询答题结果</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输入信息：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 分享码</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学号</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 姓名（可选）</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每道题的答案内容</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输出结果：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 提交成功提示</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 待审核提示</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 已审核后的每题得分与总分</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.5 自动评分模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 对学生提交的答案进行自动评分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 根据教师预设的评分点生成每题得分、评语和评分依据</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输入信息：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目文本</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 参考答案</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生答案</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师设置的关键词和得分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每个得分点的分值</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程名称</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">核心处理逻辑：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 知识点匹配</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 关键词匹配</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 语义相似度判断</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 分数累计</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题评语生成</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 总体评语生成</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">评分输出内容：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题得分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题满分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 命中的得分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 缺失的得分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 单题评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 评分依据</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 自动评分总分</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">评分约束：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 填空题偏向精确匹配与近义匹配结合</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 简答题偏向得分点覆盖率、语义接近度和内容完整性</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.6 教师审核与结果发布模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 自动评分后，教师可对结果进行人工审核</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师审核通过后，学生才能查看最终成绩</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">核心功能：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 查看学生提交记录</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 查看系统自动评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 查看命中点与失分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 修改单题得分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 修改单题评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 填写整体评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 提交最终审核结果</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输入信息：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 自动评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师修正后的单题得分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师修正后的评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师整体评价</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">输出结果：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 最终评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 已审核状态</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生可查看的正式结果</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.7 数据存储与系统支撑模块</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">功能目标：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 持久化保存教师、课程、试卷、题目、评分点、学生提交和评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 为前端和业务模块提供基础支撑</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">当前数据对象：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 试卷</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目评分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生提交</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生答案</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 自动评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 最终评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 得分点明细</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">系统支撑内容：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• REST API 接口</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• JPA 实体映射</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• MySQL 数据库存储</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• Vue 前端访问</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 前后端路由协同</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>4. 角色视角下的功能链路</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>4.1 教师端业务链路</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">1. 注册或登录教师账号。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">2. 进入教师工作台。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">3. 创建课程。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">4. 在课程下创建试卷。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">5. 为试卷配置题目、答案与评分点。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">6. 生成分享码并发给学生。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">7. 查看学生提交。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">8. 查看自动评分结果。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">9. 审核并发布最终成绩。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>4.2 学生端业务链路</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">1. 获取教师发放的分享码。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">2. 进入答题页面。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">3. 输入学号和答案。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">4. 提交试卷。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">5. 等待教师审核。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">6. 返回结果页查看最终得分、评语和评分依据。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>5. 系统架构对应关系</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">从实现角度看，项目可以对应为以下技术模块：</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>前端模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 登录注册页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师工作台页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程管理页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 试卷编辑页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 试卷分享页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生答题页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师审核页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生结果页面</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 个人中心页面</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>后端模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 控制器层：处理前端请求</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 服务层：处理业务逻辑</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 仓储层：提供数据库访问能力</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 实体层：映射数据库表结构</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• DTO 层：封装接口传输对象</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>数据库模块</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 课程表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 试卷表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 题目评分点表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 提交记录表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生答案表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 单题评分表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 评分点明细表</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>6. 输出要求整理</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">系统最终需要支持输出以下结果：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题得分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题满分信息</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题教师评语或系统评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 每题评分依据</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 总分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 总体评价</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 学生是否已审核状态</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 教师是否覆盖自动评分结果的标记</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>7. 后续扩展方向</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">后续可以继续扩展为：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持选择题、判断题等更多题型</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持成绩批量导出</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持多个教师协同维护课程</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 支持查重检测或答案相似度分析</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 接入真实 LLM 服务替代当前启发式评分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 接入正式权限认证和密码加密机制</w:t></w:r></w:p>
+    <w:sectPr>
+      <w:pgSz w:w="11906" w:h="16838"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/>
+    </w:sectPr>
+  </w:body>
+</w:document>

@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
+  <w:body>
+    <w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t>接口文档</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">本文档描述当前后端 REST API。接口统一由 Spring Boot 提供，基础路径为 `/api`。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>1. 基本说明</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 协议：HTTP</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 数据格式：`application/json`</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 认证方式：当前版本为演示型实现，教师登录后由前端保存教师 ID，接口本身未接入正式 Token 认证</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 错误处理：接口异常会返回 HTTP 4xx/5xx，并附带错误消息</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>2. 接口列表</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>2.1 系统初始化</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `GET /api/bootstrap`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：获取系统初始化展示信息。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应示例字段：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `message`：初始化提示信息</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `demoTeacher`：演示教师信息</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `demoShareCode`：演示试卷分享码</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teachers`：当前系统中的教师列表</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>2.2 教师账号相关</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `POST /api/teachers/register`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：注册教师账号。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;name&quot;: &quot;张老师&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;username&quot;: &quot;zhang@example.com&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;password&quot;: &quot;123456&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;school&quot;: &quot;实验中学&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;taughtCourse&quot;: &quot;高中生物, 高中化学&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">字段说明：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `name`：教师姓名</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `username`：用户名，当前也被前端当作邮箱使用</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `password`：密码</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `school`：所属学校</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `taughtCourse`：任教课程，当前为逗号分隔字符串</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;id&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;name&quot;: &quot;张老师&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;username&quot;: &quot;zhang@example.com&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;school&quot;: &quot;实验中学&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;taughtCourse&quot;: &quot;高中生物, 高中化学&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">常见错误：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `409 Conflict`：用户名已存在</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `400 Bad Request`：必填项为空</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `POST /api/teachers/login`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：教师登录。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;username&quot;: &quot;teacher&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;password&quot;: &quot;teacher123&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：返回完整教师工作台数据，结构与 `GET /api/teachers/{teacherId}/dashboard` 相同。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">常见错误：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `401 Unauthorized`：用户名或密码错误</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `GET /api/teachers/{teacherId}/dashboard`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：获取教师工作台数据。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体结构：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;teacher&quot;: { &quot;id&quot;: &quot;uuid&quot;, &quot;name&quot;: &quot;林老师&quot;, &quot;username&quot;: &quot;teacher&quot;, &quot;school&quot;: &quot;星火中学&quot;, &quot;taughtCourse&quot;: &quot;高中生物&quot; },</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;courses&quot;: [],</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;papers&quot;: [],</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;submissions&quot;: [],</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;stats&quot;: {</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    &quot;courseCount&quot;: 1,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    &quot;paperCount&quot;: 1,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    &quot;submissionCount&quot;: 3,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    &quot;reviewedCount&quot;: 1,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    &quot;pendingCount&quot;: 2</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  }</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `PUT /api/teachers/{teacherId}`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：修改教师资料。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;name&quot;: &quot;林老师&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;school&quot;: &quot;星火中学&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;taughtCourse&quot;: &quot;高中生物, 竞赛生物&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">说明：所有字段均可选，不传则保持原值。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：返回修改后的教师信息。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>2.3 课程管理</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `POST /api/teachers/{teacherId}/courses`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：创建课程。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;name&quot;: &quot;高中生物核心知识&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;description&quot;: &quot;围绕细胞结构与光合作用的核心单元。&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;id&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;teacherId&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;name&quot;: &quot;高中生物核心知识&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;description&quot;: &quot;围绕细胞结构与光合作用的核心单元。&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;createdAt&quot;: &quot;2026-04-07T10:00:00Z&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `DELETE /api/teachers/{teacherId}/courses/{courseId}`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：删除课程。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `courseId`：课程 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 成功时无响应体</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">常见错误：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `404 Not Found`：课程不存在或不属于该教师</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `409 Conflict`：课程下仍存在试卷，不能直接删除</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>2.4 试卷管理</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `POST /api/teachers/{teacherId}/papers`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：创建试卷。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;courseId&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;title&quot;: &quot;光合作用单元测评&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;description&quot;: &quot;用于章节练习&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;active&quot;: true,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;questions&quot;: [</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    {</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;type&quot;: &quot;FILL_BLANK&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;text&quot;: &quot;植物细胞中主要进行光合作用的细胞器是什么？&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;referenceAnswer&quot;: &quot;叶绿体&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;maxScore&quot;: 10,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;scoringPoints&quot;: [</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">        {</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">          &quot;keyword&quot;: &quot;叶绿体|chloroplast&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">          &quot;score&quot;: 10,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">          &quot;description&quot;: &quot;指出叶绿体&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">        }</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      ]</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    }</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  ]</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">字段说明：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `courseId`：所属课程 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `title`：试卷标题</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `description`：试卷描述</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `active`：是否开放给学生访问</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questions`：题目列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questions[].type`：题型，`FILL_BLANK` 或 `SHORT_ANSWER`</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questions[].text`：题目内容</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questions[].referenceAnswer`：参考答案</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questions[].maxScore`：题目分值</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questions[].scoringPoints`：评分点列表</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：返回保存后的完整试卷结构。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `PUT /api/teachers/{teacherId}/papers/{paperId}`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：更新试卷。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `paperId`：试卷 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：与创建试卷相同。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：返回更新后的试卷数据。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `DELETE /api/teachers/{teacherId}/papers/{paperId}`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：删除试卷。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `paperId`：试卷 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 成功时无响应体</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">说明：当前实现会先删除该试卷下的提交记录，再删除试卷本身。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>2.5 学生答题相关</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `GET /api/student/papers/{shareCode}`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：学生通过分享码获取试卷。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `shareCode`：试卷分享码</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;id&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;courseId&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;title&quot;: &quot;光合作用单元测评&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;description&quot;: &quot;用于章节练习&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;shareCode&quot;: &quot;BIO-2026&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;questions&quot;: [</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    {</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;id&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;type&quot;: &quot;FILL_BLANK&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;text&quot;: &quot;植物细胞中主要进行光合作用的细胞器是什么？&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;maxScore&quot;: 10</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    }</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  ]</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">常见错误：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `404 Not Found`：分享码无效或试卷未开放</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `POST /api/student/papers/{shareCode}/submissions`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：学生提交答卷，并触发自动评分。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `shareCode`：试卷分享码</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;studentId&quot;: &quot;2026001&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;studentName&quot;: &quot;张三&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;answers&quot;: [</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    {</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;questionId&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;answerText&quot;: &quot;叶绿体&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    }</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  ]</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 返回本次提交记录</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 包含 `autoScores`、`finalScores`、`autoTotal`、`finalTotal`、`overallFeedback`、`status`</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">说明：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 初次提交后，`status` 通常为 `PENDING_REVIEW`</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `autoScores` 是自动评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `finalScores` 在审核前与自动评分保持一致</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `GET /api/student/results/{shareCode}?studentId=xxx`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：学生查看结果。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `shareCode`：试卷分享码</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">查询参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `studentId`：学生学号</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;message&quot;: &quot;Review finished. Final scores are now available.&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;status&quot;: &quot;REVIEWED&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;totalScore&quot;: 30.0,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;overallFeedback&quot;: &quot;整体掌握较好……&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;paper&quot;: { },</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;scores&quot;: [  ]</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">说明：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 若教师尚未审核，则 `scores` 可能为空，并通过 `message` 提示待审核状态</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 若已审核，则返回每题得分、评语和评分依据</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>2.6 教师评分审核</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">#### `PUT /api/teachers/{teacherId}/submissions/{submissionId}/review`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">作用：教师审核学生答卷并给出最终评分。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">路径参数：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `submissionId`：提交记录 ID</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">请求体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">{</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;questionReviews&quot;: [</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    {</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;questionId&quot;: &quot;uuid&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;score&quot;: 10,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;comment&quot;: &quot;填空准确&quot;,</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">      &quot;rationale&quot;: &quot;答案与标准答案一致&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">    }</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  ],</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  &quot;overallFeedback&quot;: &quot;审核通过，知识点覆盖完整。&quot;</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:eastAsia="Consolas"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">}</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">字段说明：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questionReviews`：逐题审核列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questionReviews[].questionId`：题目 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questionReviews[].score`：最终得分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questionReviews[].comment`：教师评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questionReviews[].rationale`：评分依据说明</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `overallFeedback`：整体评语</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">响应体：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• 返回审核后的完整提交记录</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `status` 会更新为 `REVIEWED`</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `reviewedAt` 会写入审核时间</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">常见错误：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `404 Not Found`：提交记录不存在</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `403 Forbidden`：该提交不属于当前教师</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>3. 主要响应对象说明</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.1 `TeacherDashboardView`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">用于教师工作台首页。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">包含字段：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacher`：教师基本信息</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `courses`：课程列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `papers`：试卷列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `submissions`：提交记录列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `stats`：统计信息</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.2 `SubmissionView`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">用于教师审核页和提交流程。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">包含字段：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `id`：提交记录 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `paperId`：试卷 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `teacherId`：教师 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `courseId`：课程 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `shareCode`：分享码</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `studentId`：学号</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `studentName`：姓名</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `answers`：学生答案列表</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `autoScores`：自动评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `finalScores`：最终评分结果</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `autoTotal`：自动评分总分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `finalTotal`：最终评分总分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `overallFeedback`：整体评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `status`：状态</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `submittedAt`：提交时间</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `reviewedAt`：审核时间</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>3.3 `QuestionScoreView`</w:t></w:r></w:p>
+    <w:p><w:r><w:t xml:space="preserve">用于展示单题评分结果。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t xml:space="preserve">包含字段：</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `questionId`：题目 ID</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `score`：得分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `maxScore`：满分</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `matchedPoints`：命中的得分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `missingPoints`：缺失的得分点</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `comment`：评语</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `rationale`：评分依据</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">• `overridden`：是否被教师覆盖修改</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading2"/></w:pPr><w:r><w:t>4. 调用顺序建议</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>教师端典型流程</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">1. 调用 `POST /api/teachers/login` 登录。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">2. 调用 `GET /api/teachers/{teacherId}/dashboard` 刷新工作台。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">3. 调用 `POST /api/teachers/{teacherId}/courses` 创建课程。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">4. 调用 `POST /api/teachers/{teacherId}/papers` 创建试卷。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">5. 把返回的 `shareCode` 发给学生。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">6. 学生提交后，教师调用 `PUT /api/teachers/{teacherId}/submissions/{submissionId}/review` 完成审核。</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>学生端典型流程</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">1. 调用 `GET /api/student/papers/{shareCode}` 获取试卷。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">2. 调用 `POST /api/student/papers/{shareCode}/submissions` 提交答案。</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="ListParagraph"/></w:pPr><w:r><w:t xml:space="preserve">3. 调用 `GET /api/student/results/{shareCode}?studentId=...` 查看结果。</w:t></w:r></w:p>
+    <w:sectPr>
+      <w:pgSz w:w="11906" w:h="16838"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/>
+    </w:sectPr>
+  </w:body>
+</w:document>
