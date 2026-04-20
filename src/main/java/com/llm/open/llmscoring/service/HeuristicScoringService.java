@@ -28,10 +28,10 @@ public class HeuristicScoringService {
             double similarity = textSimilarity.bestAliasSimilarity(safeAnswer, question.referenceAnswer());
             score = round(question.maxScore() * similarity);
             String comment = similarity >= 0.85
-                    ? "答案与参考答案高度一致，表述较准确。"
+                    ? "答案与参考答案高度一致，术语使用较准确，整体作答较完整。"
                     : similarity >= 0.55
-                    ? "答案与参考答案有一定接近，但还可以更完整。"
-                    : "答案与参考答案差距较大，建议回顾相关知识点。";
+                    ? "答案已接近参考答案，但关键信息仍不够完整，建议补充核心条件或定义。"
+                    : "答案与参考答案差距较大，建议先回顾核心概念，再补充关键表述。";
             return new QuestionScore(
                     question.id(),
                     clamp(score, question.maxScore()),
@@ -39,7 +39,7 @@ public class HeuristicScoringService {
                     List.of("参考答案相似度: " + percentage(similarity)),
                     List.of(),
                     comment,
-                    "课程场景: " + courseName + "；采用参考答案相似度进行基础评分。",
+                    "课程场景: " + courseName + "；本题未配置显式评分点，因此按参考答案相似度进行基础评分。",
                     false
             );
         }
@@ -55,7 +55,7 @@ public class HeuristicScoringService {
                 double partial = round(point.score() * fuzzyWeight(question.type()));
                 score += partial;
                 matchedPoints.add(point.description() + "（语义接近，+" + partial + "）");
-                missingPoints.add("该要点表述不够精确，可进一步明确: " + point.keyword());
+                missingPoints.add("该得分点表达不够准确，可进一步明确: " + point.keyword());
             } else {
                 missingPoints.add(point.description() + "（未覆盖，-" + point.score() + "）");
             }
@@ -83,15 +83,15 @@ public class HeuristicScoringService {
         }
         double ratio = totalScore / maxTotal;
         if (ratio >= 0.9) {
-            return "整体表现非常扎实，关键知识点覆盖完整，可以继续提升表述的精炼度。";
+            return "整体表现非常扎实，关键知识点覆盖完整，建议继续提升表述的精炼度和术语规范性。";
         }
         if (ratio >= 0.7) {
-            return "整体掌握较好，主要知识点已经覆盖，建议补强细节和术语准确性。";
+            return "整体掌握较好，主要知识点已经覆盖，建议继续补强细节和概念之间的逻辑衔接。";
         }
         if (ratio >= 0.5) {
-            return "已具备部分基础，但覆盖还不够全面，建议结合评分依据逐项查漏补缺。";
+            return "已具备部分基础，但答案覆盖还不够全面，建议结合失分点逐项补漏。";
         }
-        return "当前答案与目标知识点仍有较大差距，建议回到课程内容重新梳理核心概念。";
+        return "当前答案与目标知识点仍有较大差距，建议回到课程内容重新梳理核心概念后再练习。";
     }
 
     private double directThreshold(QuestionType type) {
@@ -108,30 +108,30 @@ public class HeuristicScoringService {
 
     private String buildComment(Question question, String answer, double score, int hitCount, int missingCount) {
         if (answer.isBlank()) {
-            return "本题未作答，建议先写出核心概念，再逐步补充完整表述。";
+            return "本题未作答，建议先写出关键词，再按条件、过程和结果补充完整。";
         }
         double ratio = question.maxScore() == 0 ? 0 : score / question.maxScore();
         if (ratio >= 0.9) {
-            return "答案准确，关键得分点覆盖完整，表达较清晰。";
+            return "答案覆盖了大部分关键得分点，术语较准确，整体表达清晰。";
         }
         if (ratio >= 0.6) {
-            return "答案有较好基础，已覆盖部分关键点；若进一步补足遗漏内容，得分还能提升。";
+            return "答案已有较好基础，但仍有关键点缺失或表述不够具体，可对照失分点继续完善。";
         }
         if (hitCount > 0 && missingCount > 0) {
-            return "答案触及了部分知识点，但遗漏较多，建议围绕评分依据补充完整。";
+            return "答案提到了部分知识点，但遗漏较多，建议围绕关键得分点补全条件、过程或结果。";
         }
-        return "答案与题目要求匹配度较低，建议回顾概念定义和核心条件后重新作答。";
+        return "答案与题目要求匹配度较低，建议重新梳理相关概念后再作答。";
     }
 
     private String buildRationale(String courseName, Question question, List<String> matchedPoints, List<String> missingPoints) {
         List<String> parts = new ArrayList<>();
-        parts.add("课程上下文: " + courseName);
+        parts.add("课程: " + courseName);
         parts.add("题型: " + (question.type() == QuestionType.FILL_BLANK ? "填空题" : "简答题"));
-        parts.add(matchedPoints.isEmpty() ? "命中得分点: 暂无。" : "命中得分点: " + String.join("；", matchedPoints));
+        parts.add(matchedPoints.isEmpty() ? "命中得分点: 暂无" : "命中得分点: " + String.join("；", matchedPoints));
         if (!missingPoints.isEmpty()) {
-            parts.add("失分原因: " + String.join("；", missingPoints));
+            parts.add("主要失分点: " + String.join("；", missingPoints));
         }
-        return String.join(" ", parts);
+        return String.join(" | ", parts);
     }
 
     private String percentage(double ratio) {
