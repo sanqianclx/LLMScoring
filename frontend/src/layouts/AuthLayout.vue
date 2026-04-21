@@ -11,25 +11,25 @@ const { state } = usePlatform()
     <div class="auth-shell formal-auth-shell">
       <section class="auth-brand panel formal-brand">
         <p class="kicker">教学评分平台</p>
-        <h1 class="hero-title">LLM 自动评分系统</h1>
+        <h1 class="hero-title">LLM 智能评分系统</h1>
         <p class="hero-copy">
-          以课程管理、试卷创建、自动评分、人工审核和结果反馈为核心，提供适合正式教学场景的完整业务界面。
+          覆盖课程管理、试卷创建、学生提交、自动评分、教师复核与成绩查询等功能。
         </p>
 
         <div class="formal-note list-card">
-          <strong>本地演示入口</strong>
+          <strong>本地演示</strong>
           <p class="muted">教师账号：<code>teacher</code> / <code>teacher123</code></p>
-          <p class="muted">学生分享码：<code>{{ state.bootstrap?.demoShareCode || 'BIO-2026' }}</code></p>
+          <p class="muted">演示分享码：<code>{{ state.bootstrap?.demoShareCode || 'BIO-2026' }}</code></p>
         </div>
 
         <div class="hero-checklist">
           <div class="list-card">
             <strong>教师端流程</strong>
-            <p class="muted">工作台、课程、试卷、分享、审核与个人中心均为独立页面，便于日常教学管理。</p>
+            <p class="muted">创建课程与试卷、评阅学生提交，并发布最终成绩。</p>
           </div>
           <div class="list-card">
             <strong>学生端流程</strong>
-            <p class="muted">学生通过分享码独立进入答题页，提交后在结果页查看最终成绩与评语。</p>
+            <p class="muted">输入分享码进入答题；随后可用分享码与学号查询成绩。</p>
           </div>
         </div>
       </section>
@@ -38,9 +38,9 @@ const { state } = usePlatform()
         <header class="row-between auth-header">
           <div>
             <p class="kicker">{{ route.meta.title }}</p>
-            <h2 class="section-title">教师登录与账号入口</h2>
+            <h2 class="section-title">教师入口</h2>
           </div>
-          <RouterLink class="ghost-btn" to="/student/exam/BIO-2026">学生入口</RouterLink>
+          <RouterLink class="ghost-btn" to="/student">学生入口</RouterLink>
         </header>
         <slot />
       </section>

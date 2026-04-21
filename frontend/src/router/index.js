@@ -18,13 +18,13 @@ const routes = [
     path: '/forgot-password',
     name: 'forgot-password',
     component: () => import('../views/auth/ForgotPasswordView.vue'),
-    meta: { layout: 'auth', title: '找回密码' }
+    meta: { layout: 'auth', title: '重置密码' }
   },
   {
     path: '/teacher/dashboard',
     name: 'teacher-dashboard',
     component: () => import('../views/teacher/DashboardView.vue'),
-    meta: { layout: 'teacher', title: '教师工作台', section: 'dashboard' }
+    meta: { layout: 'teacher', title: '仪表盘', section: 'dashboard' }
   },
   {
     path: '/teacher/courses',
@@ -33,10 +33,16 @@ const routes = [
     meta: { layout: 'teacher', title: '课程管理', section: 'courses' }
   },
   {
+    path: '/teacher/papers',
+    name: 'paper-list',
+    component: () => import('../views/teacher/PaperEditorView.vue'),
+    meta: { layout: 'teacher', title: '试卷管理', section: 'papers' }
+  },
+  {
     path: '/teacher/papers/new',
     name: 'paper-create',
     component: () => import('../views/teacher/PaperEditorView.vue'),
-    meta: { layout: 'teacher', title: '创建试卷', section: 'papers' }
+    meta: { layout: 'teacher', title: '新建试卷', section: 'papers' }
   },
   {
     path: '/teacher/papers/:paperId/edit',
@@ -48,31 +54,37 @@ const routes = [
     path: '/teacher/share/:paperId',
     name: 'paper-share',
     component: () => import('../views/teacher/ShareView.vue'),
-    meta: { layout: 'teacher', title: '试卷分享', section: 'papers' }
+    meta: { layout: 'teacher', title: '分享试卷', section: 'papers' }
   },
   {
     path: '/teacher/review',
     name: 'teacher-review',
     component: () => import('../views/teacher/ReviewView.vue'),
-    meta: { layout: 'teacher', title: '评分审核', section: 'review' }
+    meta: { layout: 'teacher', title: '成绩复核', section: 'review' }
   },
   {
     path: '/teacher/profile',
     name: 'teacher-profile',
     component: () => import('../views/teacher/ProfileView.vue'),
-    meta: { layout: 'teacher', title: '个人中心', section: 'profile' }
+    meta: { layout: 'teacher', title: '个人信息', section: 'profile' }
+  },
+  {
+    path: '/student',
+    name: 'student-entry',
+    component: () => import('../views/student/StudentEntryView.vue'),
+    meta: { layout: 'student', title: '学生入口' }
   },
   {
     path: '/student/exam/:shareCode',
     name: 'student-exam',
     component: () => import('../views/student/ExamView.vue'),
-    meta: { layout: 'student', title: '学生答题' }
+    meta: { layout: 'student', title: '开始答题' }
   },
   {
     path: '/student/result/:shareCode',
     name: 'student-result',
     component: () => import('../views/student/ResultView.vue'),
-    meta: { layout: 'student', title: '学生结果' }
+    meta: { layout: 'student', title: '查询成绩' }
   },
   {
     path: '/:pathMatch(.*)*',
@@ -91,7 +103,7 @@ const router = createRouter({
 })
 
 router.afterEach((to) => {
-  document.title = `${to.meta.title || 'LLM 自动评分系统'} - LLM 自动评分系统`
+  document.title = `${to.meta.title || 'LLM 智能评分'} - LLM 智能评分`
 })
 
 export default router

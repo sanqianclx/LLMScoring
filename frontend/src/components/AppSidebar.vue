@@ -7,11 +7,11 @@ const route = useRoute()
 const { state } = usePlatform()
 
 const navItems = [
-  { label: '首页', to: '/teacher/dashboard', section: 'dashboard', icon: '首' },
-  { label: '课程管理', to: '/teacher/courses', section: 'courses', icon: '课' },
-  { label: '试卷管理', to: '/teacher/papers/new', section: 'papers', icon: '卷' },
-  { label: '评分审核', to: '/teacher/review', section: 'review', icon: '审' },
-  { label: '个人中心', to: '/teacher/profile', section: 'profile', icon: '我' }
+  { label: 'Dashboard', to: '/teacher/dashboard', section: 'dashboard', icon: 'DB' },
+  { label: 'Courses', to: '/teacher/courses', section: 'courses', icon: 'CR' },
+  { label: 'Papers', to: '/teacher/papers', section: 'papers', icon: 'PP' },
+  { label: 'Review', to: '/teacher/review', section: 'review', icon: 'RV' },
+  { label: 'Profile', to: '/teacher/profile', section: 'profile', icon: 'ME' }
 ]
 
 const activeSection = computed(() => route.meta.section)
@@ -20,9 +20,9 @@ const activeSection = computed(() => route.meta.section)
 <template>
   <aside class="side-card sidebar-shell">
     <div>
-      <p class="kicker">LLM 自动评分</p>
-      <h2 class="section-title brand-title">教师控制台</h2>
-      <p class="muted">{{ state.teacher.school || '本地教学工作区' }}</p>
+      <p class="kicker">LLM Scoring</p>
+      <h2 class="section-title brand-title">Teacher Console</h2>
+      <p class="muted">{{ state.teacher.school || 'Local Workspace' }}</p>
     </div>
 
     <nav class="nav-list">
@@ -39,11 +39,11 @@ const activeSection = computed(() => route.meta.section)
     </nav>
 
     <div class="sidebar-summary list-card">
-      <strong>{{ state.teacher.name || '教师' }}</strong>
+      <strong>{{ state.teacher.name || 'Teacher' }}</strong>
       <p class="muted">{{ state.teacher.role }}</p>
       <div class="toolbar">
-        <span class="badge">{{ state.teacher.taughtCourses[0] || '任教课程' }}</span>
-        <span class="badge">{{ state.teacher.lastLogin || '--' }}</span>
+        <span class="badge">{{ state.teacher.taughtCourses[0] || 'Course Tag' }}</span>
+        <span class="badge">{{ state.metrics.pendingCount }} Pending</span>
       </div>
     </div>
   </aside>
@@ -89,5 +89,6 @@ const activeSection = computed(() => route.meta.section)
   justify-content: center;
   border-radius: 10px;
   background: rgba(31, 94, 255, 0.08);
+  font-size: 0.72rem;
 }
 </style>

@@ -28,18 +28,18 @@ public class HeuristicScoringService {
             double similarity = textSimilarity.bestAliasSimilarity(safeAnswer, question.referenceAnswer());
             score = round(question.maxScore() * similarity);
             String comment = similarity >= 0.85
-                    ? "答案与参考答案高度一致，术语使用较准确，整体作答较完整。"
+                    ? "The answer is highly aligned with the reference answer."
                     : similarity >= 0.55
-                    ? "答案已接近参考答案，但关键信息仍不够完整，建议补充核心条件或定义。"
-                    : "答案与参考答案差距较大，建议先回顾核心概念，再补充关键表述。";
+                    ? "The answer is partially aligned with the reference answer, but key details are still missing."
+                    : "The answer is far from the reference answer and needs more key concepts.";
             return new QuestionScore(
                     question.id(),
                     clamp(score, question.maxScore()),
                     question.maxScore(),
-                    List.of("参考答案相似度: " + percentage(similarity)),
+                    List.of("Reference answer similarity: " + percentage(similarity)),
                     List.of(),
                     comment,
-                    "课程场景: " + courseName + "；本题未配置显式评分点，因此按参考答案相似度进行基础评分。",
+                    "Course: " + courseName + " | This question has no explicit scoring points, so the score is based on similarity to the reference answer.",
                     false
             );
         }
@@ -50,14 +50,14 @@ public class HeuristicScoringService {
 
             if (directMatch || similarity >= directThreshold(question.type())) {
                 score += point.score();
-                matchedPoints.add(point.description() + "（命中，+" + point.score() + "）");
+                matchedPoints.add(point.description() + " (matched, +" + point.score() + ")");
             } else if (similarity >= fuzzyThreshold(question.type())) {
                 double partial = round(point.score() * fuzzyWeight(question.type()));
                 score += partial;
-                matchedPoints.add(point.description() + "（语义接近，+" + partial + "）");
-                missingPoints.add("该得分点表达不够准确，可进一步明确: " + point.keyword());
+                matchedPoints.add(point.description() + " (partially matched, +" + partial + ")");
+                missingPoints.add("Clarify this point further: " + point.keyword());
             } else {
-                missingPoints.add(point.description() + "（未覆盖，-" + point.score() + "）");
+                missingPoints.add(point.description() + " (missing, -" + point.score() + ")");
             }
         }
 
@@ -79,19 +79,19 @@ public class HeuristicScoringService {
 
     public String buildOverallFeedback(double totalScore, double maxTotal) {
         if (maxTotal <= 0) {
-            return "当前试卷暂无可评分题目。";
+            return "本试卷暂不包含可评分的题目。";
         }
         double ratio = totalScore / maxTotal;
         if (ratio >= 0.9) {
-            return "整体表现非常扎实，关键知识点覆盖完整，建议继续提升表述的精炼度和术语规范性。";
+            return "总体表现优秀，关键概念覆盖完整，表达清晰。";
         }
         if (ratio >= 0.7) {
-            return "整体掌握较好，主要知识点已经覆盖，建议继续补强细节和概念之间的逻辑衔接。";
+            return "总体表现良好，大部分关键概念已覆盖，但仍有提升空间。";
         }
         if (ratio >= 0.5) {
-            return "已具备部分基础，但答案覆盖还不够全面，建议结合失分点逐项补漏。";
+            return "已体现出基本理解，但仍缺少若干重要细节。";
         }
-        return "当前答案与目标知识点仍有较大差距，建议回到课程内容重新梳理核心概念后再练习。";
+        return "当前答案与预期覆盖范围仍有较大差距，建议复习核心概念后再作答。";
     }
 
     private double directThreshold(QuestionType type) {
@@ -108,28 +108,28 @@ public class HeuristicScoringService {
 
     private String buildComment(Question question, String answer, double score, int hitCount, int missingCount) {
         if (answer.isBlank()) {
-            return "本题未作答，建议先写出关键词，再按条件、过程和结果补充完整。";
+            return "该题未提交作答。";
         }
         double ratio = question.maxScore() == 0 ? 0 : score / question.maxScore();
         if (ratio >= 0.9) {
-            return "答案覆盖了大部分关键得分点，术语较准确，整体表达清晰。";
+            return "答案较准确，覆盖了大部分要点，表述清晰。";
         }
         if (ratio >= 0.6) {
-            return "答案已有较好基础，但仍有关键点缺失或表述不够具体，可对照失分点继续完善。";
+            return "答案有一定基础，但部分关键要点仍不够完整。";
         }
         if (hitCount > 0 && missingCount > 0) {
-            return "答案提到了部分知识点，但遗漏较多，建议围绕关键得分点补全条件、过程或结果。";
+            return "答案提到了一些正确要点，但仍缺少若干重要部分。";
         }
-        return "答案与题目要求匹配度较低，建议重新梳理相关概念后再作答。";
+        return "答案与题目要求的范围匹配度不高。";
     }
 
     private String buildRationale(String courseName, Question question, List<String> matchedPoints, List<String> missingPoints) {
         List<String> parts = new ArrayList<>();
-        parts.add("课程: " + courseName);
-        parts.add("题型: " + (question.type() == QuestionType.FILL_BLANK ? "填空题" : "简答题"));
-        parts.add(matchedPoints.isEmpty() ? "命中得分点: 暂无" : "命中得分点: " + String.join("；", matchedPoints));
+        parts.add("课程：" + courseName);
+        parts.add("题型：" + (question.type() == QuestionType.FILL_BLANK ? "填空题" : "简答题"));
+        parts.add(matchedPoints.isEmpty() ? "命中要点：无" : "命中要点：" + String.join("；", matchedPoints));
         if (!missingPoints.isEmpty()) {
-            parts.add("主要失分点: " + String.join("；", missingPoints));
+            parts.add("缺失要点：" + String.join("；", missingPoints));
         }
         return String.join(" | ", parts);
     }

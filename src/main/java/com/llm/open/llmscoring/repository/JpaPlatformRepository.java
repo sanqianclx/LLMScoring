@@ -61,19 +61,19 @@ public class JpaPlatformRepository implements PlatformRepository {
         Instant now = Instant.now();
         Teacher demoTeacher = saveTeacher(new Teacher(
                 UUID.randomUUID(),
-                "林老师",
+                "演示教师",
                 "teacher",
                 "teacher123",
-                "星火中学",
-                "高中生物",
+                "演示学校",
+                "生物学",
                 now
         ));
 
         Course demoCourse = saveCourse(new Course(
                 UUID.randomUUID(),
                 demoTeacher.id(),
-                "高中生物核心知识",
-                "围绕细胞结构与光合作用的核心单元。",
+                "生物学核心概念",
+                "用于演示试卷创建、学生提交与教师阅卷流程的课程。",
                 now
         ));
 
@@ -81,23 +81,23 @@ public class JpaPlatformRepository implements PlatformRepository {
                 new Question(
                         UUID.randomUUID(),
                         QuestionType.FILL_BLANK,
-                        "植物细胞中主要进行光合作用的细胞器是什么？",
+                        "植物细胞中负责光合作用的细胞器是什么？",
                         "叶绿体",
                         10,
-                        List.of(new ScoringPoint(UUID.randomUUID(), "chloroplast|叶绿体", 10, "能够准确指出叶绿体。"))
+                        List.of(new ScoringPoint(UUID.randomUUID(), "叶绿体", 10, "识别叶绿体。"))
                 ),
                 new Question(
                         UUID.randomUUID(),
                         QuestionType.SHORT_ANSWER,
-                        "简述光合作用的基本条件与主要产物。",
-                        "光合作用需要光照、水和二氧化碳，产物为有机物和氧气。",
+                        "简要描述光合作用的条件和产物。",
+                        "光合作用需要光照、水和二氧化碳，并生成葡萄糖和氧气。",
                         20,
                         List.of(
-                                new ScoringPoint(UUID.randomUUID(), "light|sunlight|光照", 4, "提到光照是必要条件。"),
-                                new ScoringPoint(UUID.randomUUID(), "water|H2O|水", 4, "提到水是反应物。"),
-                                new ScoringPoint(UUID.randomUUID(), "carbon dioxide|CO2|二氧化碳", 4, "提到二氧化碳是反应物。"),
-                                new ScoringPoint(UUID.randomUUID(), "organic matter|glucose|有机物|葡萄糖", 4, "提到有机物或葡萄糖是产物。"),
-                                new ScoringPoint(UUID.randomUUID(), "oxygen|O2|氧气", 4, "提到氧气是产物。")
+                                new ScoringPoint(UUID.randomUUID(), "光|光照|阳光", 4, "提到光照。"),
+                                new ScoringPoint(UUID.randomUUID(), "水|H2O", 4, "提到水。"),
+                                new ScoringPoint(UUID.randomUUID(), "二氧化碳|CO2", 4, "提到二氧化碳。"),
+                                new ScoringPoint(UUID.randomUUID(), "葡萄糖|有机物", 4, "提到葡萄糖或有机物。"),
+                                new ScoringPoint(UUID.randomUUID(), "氧气|O2", 4, "提到氧气。")
                         )
                 )
         );
@@ -106,8 +106,8 @@ public class JpaPlatformRepository implements PlatformRepository {
                 UUID.randomUUID(),
                 demoTeacher.id(),
                 demoCourse.id(),
-                "光合作用单元测评",
-                "用于演示学生提交、自动评分和教师审核的示例试卷。",
+                "光合作用单元小测",
+                "用于验证端到端评分流程的演示试卷。",
                 "BIO-2026",
                 true,
                 questions,
@@ -187,32 +187,7 @@ public class JpaPlatformRepository implements PlatformRepository {
         entity.setActive(paper.active());
         entity.setCreatedAt(paper.createdAt());
         entity.setUpdatedAt(paper.updatedAt());
-        entity.getQuestions().clear();
-
-        int questionOrder = 0;
-        for (Question question : paper.questions()) {
-            QuestionEntity questionEntity = new QuestionEntity();
-            questionEntity.setId(question.id().toString());
-            questionEntity.setPaper(entity);
-            questionEntity.setType(question.type());
-            questionEntity.setText(question.text());
-            questionEntity.setReferenceAnswer(question.referenceAnswer());
-            questionEntity.setMaxScore(question.maxScore());
-            questionEntity.setSortOrder(questionOrder++);
-
-            int pointOrder = 0;
-            for (ScoringPoint point : question.scoringPoints()) {
-                ScoringPointEntity pointEntity = new ScoringPointEntity();
-                pointEntity.setId(point.id().toString());
-                pointEntity.setQuestion(questionEntity);
-                pointEntity.setKeyword(point.keyword());
-                pointEntity.setScore(point.score());
-                pointEntity.setDescription(point.description());
-                pointEntity.setSortOrder(pointOrder++);
-                questionEntity.getScoringPoints().add(pointEntity);
-            }
-            entity.getQuestions().add(questionEntity);
-        }
+        replaceQuestionEntities(entity, paper.questions());
         return toPaper(paperRepository.save(entity));
     }
 
@@ -376,6 +351,10 @@ public class JpaPlatformRepository implements PlatformRepository {
     }
 
     private ExamPaper toPaper(PaperEntity entity) {
+        List<Question> questions = entity.getQuestions().stream()
+                .sorted(Comparator.comparingInt(QuestionEntity::getSortOrder))
+                .map(this::toQuestion)
+                .toList();
         return new ExamPaper(
                 UUID.fromString(entity.getId()),
                 UUID.fromString(entity.getTeacher().getId()),
@@ -384,10 +363,39 @@ public class JpaPlatformRepository implements PlatformRepository {
                 entity.getDescription(),
                 entity.getShareCode(),
                 entity.isActive(),
-                entity.getQuestions().stream().sorted(Comparator.comparingInt(QuestionEntity::getSortOrder)).map(this::toQuestion).toList(),
+                questions,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
+    }
+
+    private void replaceQuestionEntities(PaperEntity entity, List<Question> questions) {
+        entity.getQuestions().clear();
+
+        int questionOrder = 0;
+        for (Question question : questions) {
+            QuestionEntity questionEntity = new QuestionEntity();
+            questionEntity.setId(question.id().toString());
+            questionEntity.setPaper(entity);
+            questionEntity.setType(question.type());
+            questionEntity.setText(question.text());
+            questionEntity.setReferenceAnswer(question.referenceAnswer());
+            questionEntity.setMaxScore(question.maxScore());
+            questionEntity.setSortOrder(questionOrder++);
+
+            int pointOrder = 0;
+            for (ScoringPoint point : question.scoringPoints()) {
+                ScoringPointEntity pointEntity = new ScoringPointEntity();
+                pointEntity.setId(point.id().toString());
+                pointEntity.setQuestion(questionEntity);
+                pointEntity.setKeyword(point.keyword());
+                pointEntity.setScore(point.score());
+                pointEntity.setDescription(point.description());
+                pointEntity.setSortOrder(pointOrder++);
+                questionEntity.getScoringPoints().add(pointEntity);
+            }
+            entity.getQuestions().add(questionEntity);
+        }
     }
 
     private Question toQuestion(QuestionEntity entity) {
@@ -457,4 +465,3 @@ public class JpaPlatformRepository implements PlatformRepository {
         );
     }
 }
-

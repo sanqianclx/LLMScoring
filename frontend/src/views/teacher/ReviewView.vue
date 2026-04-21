@@ -1,46 +1,75 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import SectionCard from '../../components/SectionCard.vue'
 import { pushToast } from '../../composables/useToast'
 import { usePlatform } from '../../services/platform'
 
-const { state, reviewSubmission, findPaper, findCourse } = usePlatform()
+const { state, reviewSubmission, findPaper, findCourse, refreshDashboard } = usePlatform()
 
-const filters = ref({ status: 'ALL', keyword: '' })
+const filters = reactive({
+  status: 'ALL',
+  keyword: ''
+})
+const activeSubmissionId = ref('')
+const activeSubmission = ref(null)
 
 const filtered = computed(() => state.submissions.filter((item) => {
-  const statusOk = filters.value.status === 'ALL' || item.status === filters.value.status
-  const keyword = filters.value.keyword.trim().toLowerCase()
-  const keywordOk = !keyword || item.studentId.toLowerCase().includes(keyword) || item.studentName.toLowerCase().includes(keyword)
-  return statusOk && keywordOk
+  const statusMatch = filters.status === 'ALL' || item.status === filters.status
+  const keyword = filters.keyword.trim().toLowerCase()
+  const keywordMatch = !keyword
+    || item.studentId.toLowerCase().includes(keyword)
+    || item.studentName.toLowerCase().includes(keyword)
+    || item.shareCode.toLowerCase().includes(keyword)
+  return statusMatch && keywordMatch
 }))
-
-const activeSubmission = ref(filtered.value[0] ? structuredClone(filtered.value[0]) : null)
 
 watch(filtered, (value) => {
   if (!value.length) {
+    activeSubmissionId.value = ''
     activeSubmission.value = null
     return
   }
-  if (!value.find((item) => item.id === activeSubmission.value?.id)) {
-    activeSubmission.value = structuredClone(value[0])
+
+  if (!value.find((item) => item.id === activeSubmissionId.value)) {
+    activeSubmissionId.value = value[0].id
   }
-})
+
+  const current = value.find((item) => item.id === activeSubmissionId.value)
+  activeSubmission.value = current ? structuredClone(current) : null
+}, { immediate: true })
 
 const totalDraft = computed(() => activeSubmission.value?.answers.reduce((sum, answer) => sum + Number(answer.finalScore || 0), 0) || 0)
 
+onMounted(() => {
+  if (state.teacher.id) {
+    refreshDashboard(state.teacher.id).catch(() => {})
+  }
+})
+
 function setActive(submission) {
+  activeSubmissionId.value = submission.id
   activeSubmission.value = structuredClone(submission)
 }
 
-async function saveReview() {
-  if (!activeSubmission.value) return
+async function reloadDashboard() {
+  if (!state.teacher.id) {
+    return
+  }
   try {
-    await reviewSubmission({
-      ...activeSubmission.value,
-      summary: activeSubmission.value.overallFeedback || `最终总分 ${totalDraft.value} 分`
-    })
-    activeSubmission.value = structuredClone(state.submissions.find((item) => item.id === activeSubmission.value.id) || state.submissions[0])
+    await refreshDashboard(state.teacher.id, true)
+  } catch (error) {
+    pushToast(error.message, 'error')
+  }
+}
+
+async function publishReview() {
+  if (!activeSubmission.value) {
+    return
+  }
+  try {
+    await reviewSubmission(activeSubmission.value)
+    const latest = state.submissions.find((item) => item.id === activeSubmissionId.value)
+    activeSubmission.value = latest ? structuredClone(latest) : null
   } catch (error) {
     pushToast(error.message, 'error')
   }
@@ -49,26 +78,36 @@ async function saveReview() {
 
 <template>
   <section class="section-grid">
-    <SectionCard title="评分审核" subtitle="自动评分完成后，教师可在此逐题审核并修正最终得分。">
+    <SectionCard title="教师评阅" subtitle="查看 AI 评分结果，按题调整分数，并发布最终成绩。">
+      <template #actions>
+        <button class="ghost-btn" @click="reloadDashboard">刷新队列</button>
+      </template>
+
       <div class="split-view">
         <aside class="side-card" style="padding: 18px;">
           <div class="section-grid">
             <label class="label">
-              <span>状态筛选</span>
+              <span>状态</span>
               <select v-model="filters.status" class="select">
                 <option value="ALL">全部</option>
-                <option value="PENDING_REVIEW">待审核</option>
-                <option value="REVIEWED">已审核</option>
+                <option value="PENDING_REVIEW">待复核</option>
+                <option value="REVIEWED">已发布</option>
               </select>
             </label>
             <label class="label">
-              <span>搜索学生</span>
-              <input v-model="filters.keyword" class="input" placeholder="按学号或姓名搜索" />
+              <span>搜索</span>
+              <input v-model="filters.keyword" class="input" placeholder="学号 / 姓名 / 分享码" />
             </label>
           </div>
 
-          <div class="data-grid" style="margin-top: 18px;">
-            <button v-for="submission in filtered" :key="submission.id" class="list-card review-list-item" :class="{ active: activeSubmission?.id === submission.id }" @click="setActive(submission)">
+          <div v-if="filtered.length" class="data-grid" style="margin-top: 18px;">
+            <button
+              v-for="submission in filtered"
+              :key="submission.id"
+              class="list-card review-list-item"
+              :class="{ active: activeSubmission?.id === submission.id }"
+              @click="setActive(submission)"
+            >
               <div class="row-between">
                 <strong>{{ submission.studentName }}</strong>
                 <span class="status-pill" :class="submission.status === 'PENDING_REVIEW' ? 'warning' : 'success'">{{ submission.statusLabel }}</span>
@@ -77,6 +116,7 @@ async function saveReview() {
               <p class="muted">{{ findPaper(submission.paperId)?.title }}</p>
             </button>
           </div>
+          <div v-else class="empty-state">没有符合当前筛选条件的提交记录。</div>
         </aside>
 
         <div v-if="activeSubmission" class="section-grid">
@@ -84,12 +124,12 @@ async function saveReview() {
             <div class="row-between">
               <div>
                 <p class="kicker">提交详情</p>
-                <h3 class="section-title">{{ activeSubmission.studentName }}（{{ activeSubmission.studentId }}）</h3>
+                <h3 class="section-title">{{ activeSubmission.studentName }} ({{ activeSubmission.studentId }})</h3>
                 <p class="muted">{{ findCourse(activeSubmission.courseId)?.name }} / {{ findPaper(activeSubmission.paperId)?.title }}</p>
               </div>
               <div class="toolbar">
-                <span class="badge">自动评分 {{ activeSubmission.autoTotal }}</span>
-                <span class="badge">最终评分 {{ totalDraft }}</span>
+                <span class="badge">AI 总分 {{ activeSubmission.autoTotal }}</span>
+                <span class="badge">最终总分 {{ totalDraft }}</span>
               </div>
             </div>
           </article>
@@ -98,22 +138,22 @@ async function saveReview() {
             <div class="row-between">
               <div>
                 <h4 class="section-title" style="font-size: 1.08rem;">{{ answer.stem }}</h4>
-                <p class="muted">题型：{{ answer.type }}</p>
+                <p class="muted">题型：{{ answer.typeLabel }}</p>
               </div>
-              <span class="status-pill info">自动评分完成</span>
+              <span class="status-pill info">AI 已评分</span>
             </div>
 
             <div class="two-col section-grid" style="margin-top: 16px;">
               <div class="list-card">
                 <strong>学生答案</strong>
-                <p class="muted">{{ answer.answerText || '学生未作答。' }}</p>
+                <p class="muted">{{ answer.answerText || '未提交作答。' }}</p>
               </div>
               <div class="list-card">
-                <strong>评分依据</strong>
-                <p class="muted">{{ answer.rationale || '当前暂无评分依据。' }}</p>
+                <strong>AI 评分依据</strong>
+                <p class="muted">{{ answer.rationale || '未返回评分依据。' }}</p>
                 <div class="toolbar" style="margin-top: 12px;">
-                  <span v-for="item in answer.matchedPoints" :key="item" class="status-pill success">{{ item }}</span>
-                  <span v-for="item in answer.missingPoints" :key="item" class="status-pill danger">{{ item }}</span>
+                  <span v-for="item in answer.matchedPoints" :key="`m-${item}`" class="status-pill success">{{ item }}</span>
+                  <span v-for="item in answer.missingPoints" :key="`x-${item}`" class="status-pill danger">{{ item }}</span>
                 </div>
               </div>
             </div>
@@ -128,17 +168,22 @@ async function saveReview() {
               </label>
               <label class="label">
                 <span>教师评语</span>
-                <textarea v-model="answer.comment" class="textarea"></textarea>
+                <textarea v-model="answer.comment" class="textarea" placeholder="可选：填写本题评语"></textarea>
               </label>
             </div>
           </article>
 
+          <label class="label">
+            <span>总体评语</span>
+            <textarea v-model="activeSubmission.overallFeedback" class="textarea" placeholder="填写将展示给学生的最终评语"></textarea>
+          </label>
+
           <div class="toolbar">
-            <button class="secondary-btn" @click="saveReview">保存审核结果</button>
+            <button class="secondary-btn" @click="publishReview">发布最终成绩</button>
           </div>
         </div>
 
-        <div v-else class="empty-state">当前筛选条件下没有匹配的提交记录。</div>
+        <div v-else class="empty-state">请选择一份提交记录进行评阅。</div>
       </div>
     </SectionCard>
   </section>
@@ -150,9 +195,11 @@ async function saveReview() {
   text-align: left;
   background: rgba(255, 255, 255, 0.76);
 }
+
 .review-list-item.active {
   background: linear-gradient(135deg, rgba(31, 94, 255, 0.12), rgba(83, 180, 255, 0.14));
 }
+
 .input-range {
   width: min(100%, 320px);
 }

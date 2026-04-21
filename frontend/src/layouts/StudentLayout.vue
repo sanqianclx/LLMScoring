@@ -7,12 +7,12 @@ import { RouterLink } from 'vue-router'
     <header class="student-shell panel">
       <div>
         <p class="kicker">学生端</p>
-        <h1 class="section-title">在线答题与结果查询</h1>
-        <p class="muted">通过分享码进入答题页面，无需登录，教师审核完成后可查看最终成绩与评语。</p>
+        <h1 class="section-title">答题与成绩查询</h1>
+        <p class="muted">输入分享码打开对应试卷；提交后可使用相同分享码与学号查询最终成绩。</p>
       </div>
       <div class="inline-actions">
         <RouterLink class="ghost-btn" to="/login">教师登录</RouterLink>
-        <RouterLink class="secondary-btn" to="/student/exam/BIO-2026">进入示例试卷</RouterLink>
+        <RouterLink class="secondary-btn" to="/student">学生入口</RouterLink>
       </div>
     </header>
     <slot />

@@ -1,22 +1,24 @@
-import { computed, reactive } from 'vue'
+﻿import { computed, reactive } from 'vue'
 import { pushToast } from '../composables/useToast'
 
 const teacherIdStorageKey = 'llm-scoring-teacher-id'
 
+const defaultTeacher = () => ({
+  id: '',
+  name: '',
+  username: '',
+  school: '',
+  taughtCourse: '',
+  email: '',
+  taughtCourses: [],
+  role: '教师',
+  lastLogin: ''
+})
+
 const state = reactive({
   initialized: false,
   bootstrap: null,
-  teacher: {
-    id: '',
-    name: '',
-    username: '',
-    school: '',
-    taughtCourse: '',
-    email: '',
-    taughtCourses: [],
-    role: '任课教师',
-    lastLogin: ''
-  },
+  teacher: defaultTeacher(),
   courses: [],
   papers: [],
   submissions: [],
@@ -29,10 +31,10 @@ const state = reactive({
   },
   activities: [],
   guideItems: [
-    '请先创建课程，再在课程下维护试卷。',
-    '需要向学生发放试卷时，请使用试卷分享页面。',
-    '建议先在评分审核页完成人工复核，再向学生发布最终结果。',
-    '可在个人中心维护教师信息与任教课程标签。'
+    '请先创建课程，再创建试卷。',
+    '学生通过分享码进入对应的试卷。',
+    '系统先自动评分，教师再进行复核并发布最终成绩。',
+    '学生可使用分享码与学号再次查询最终成绩。'
   ],
   studentPaper: null,
   studentResult: null
@@ -52,7 +54,7 @@ async function api(path, options = {}) {
     try {
       const body = await response.json()
       message = body.message || body.error || message
-    } catch (error) {
+    } catch {
       const text = await response.text()
       message = text || message
     }
@@ -68,7 +70,7 @@ async function api(path, options = {}) {
 }
 
 function toLabelStatus(status) {
-  return status === 'REVIEWED' ? '已审核' : '待审核'
+  return status === 'REVIEWED' ? '已发布' : '待复核'
 }
 
 function questionTypeLabel(type) {
@@ -86,24 +88,25 @@ function formatDateTime(value) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
 }
 
-function normalizeTeacher(raw) {
+function normalizeTeacher(raw = {}) {
   return {
     ...raw,
-    email: raw.username,
+    email: raw.username || '',
     taughtCourses: raw.taughtCourse ? raw.taughtCourse.split(',').map((item) => item.trim()).filter(Boolean) : [],
-    role: '任课教师',
-    lastLogin: new Date().toLocaleString()
+    role: '教师',
+    lastLogin: formatDateTime(new Date().toISOString())
   }
 }
 
 function normalizePaper(raw, submissionCount = 0) {
   return {
     ...raw,
-    status: raw.active ? '进行中' : '未启用',
+    status: raw.active ? '启用' : '停用',
     submittedCount: submissionCount,
     questions: (raw.questions || []).map((question) => ({
       ...question,
       stem: question.text,
+      typeLabel: questionTypeLabel(question.type),
       points: (question.scoringPoints || []).map((point) => ({
         ...point,
         label: point.keyword,
@@ -126,6 +129,7 @@ function normalizeSubmission(raw, paperMap) {
       questionId: question.id,
       stem: question.text,
       type: questionTypeLabel(question.type),
+      typeLabel: questionTypeLabel(question.type),
       answerText: answerMap.get(question.id) || '',
       autoScore: autoScore?.score ?? 0,
       finalScore: finalScore?.score ?? 0,
@@ -143,22 +147,23 @@ function normalizeSubmission(raw, paperMap) {
     statusLabel: toLabelStatus(raw.status),
     submittedAtLabel: formatDateTime(raw.submittedAt),
     reviewedAtLabel: formatDateTime(raw.reviewedAt),
+    paperTitle: paper?.title || '未命名试卷',
     answers,
-    paperTitle: paper?.title || '未知试卷'
+    overallFeedback: raw.overallFeedback || ''
   }
 }
 
 function buildActivities(papers, submissions) {
   const recentSubmissions = submissions.slice(0, 3).map((submission) => ({
     id: `submission-${submission.id}`,
-    title: `收到 ${submission.studentName} 的答卷提交`,
+    title: `${submission.studentName}提交了试卷`,
     time: submission.submittedAtLabel,
-    kind: '提交'
+    kind: '提交记录'
   }))
 
-  const recentPapers = papers.slice(0, 2).map((paper) => ({
+  const recentPapers = papers.slice(0, 3).map((paper) => ({
     id: `paper-${paper.id}`,
-    title: `试卷已发布：${paper.title}`,
+    title: `试卷已更新：${paper.title}`,
     time: formatDateTime(paper.updatedAt),
     kind: '试卷'
   }))
@@ -214,7 +219,7 @@ async function refreshDashboard(teacherId = state.teacher.id, showToast = false)
   applyDashboard(dashboard)
   localStorage.setItem(teacherIdStorageKey, teacherId)
   if (showToast) {
-    pushToast('工作台已刷新', 'success')
+    pushToast('仪表盘已刷新', 'success')
   }
   return dashboard
 }
@@ -244,7 +249,7 @@ async function registerTeacher(form) {
       taughtCourse: (form.courses || []).join(', ') || '通用课程'
     })
   })
-  pushToast('注册完成', 'success')
+  pushToast('注册成功', 'success')
   return true
 }
 
@@ -259,7 +264,7 @@ async function updateTeacherProfile(form) {
     })
   })
   await refreshDashboard(teacherId)
-  pushToast('个人资料已更新', 'success')
+  pushToast('个人信息已更新', 'success')
 }
 
 async function createCourse(course) {
@@ -287,12 +292,12 @@ function toPaperPayload(draft) {
     courseId: draft.courseId,
     title: draft.title,
     description: draft.description,
-    active: draft.active ?? draft.status !== '未启用',
+    active: draft.active ?? draft.status !== 'Disabled',
     questions: (draft.questions || []).map((question) => ({
       type: question.type,
       text: question.stem,
       referenceAnswer: question.referenceAnswer || question.standardAnswer || '',
-      maxScore: Number(question.maxScore || question.points.reduce((sum, point) => sum + Number(point.score || 0), 0)),
+      maxScore: Number(question.maxScore || (question.points || []).reduce((sum, point) => sum + Number(point.score || 0), 0)),
       scoringPoints: (question.points || []).map((point) => ({
         keyword: point.keyword || point.label,
         score: Number(point.score || 0),
@@ -302,17 +307,39 @@ function toPaperPayload(draft) {
   }
 }
 
+function validatePaperPayload(payload) {
+  if (!payload.title?.trim()) {
+    throw new Error('试卷标题不能为空')
+  }
+  if (!payload.courseId) {
+    throw new Error('请先选择课程')
+  }
+  if (!payload.questions?.length) {
+    throw new Error('至少需要添加一道题目')
+  }
+
+  payload.questions.forEach((question, index) => {
+    if (!question.text?.trim()) {
+      throw new Error(`第 ${index + 1} 题题干不能为空`)
+    }
+    if (Number(question.maxScore) <= 0) {
+      throw new Error(`第 ${index + 1} 题分值必须大于 0`)
+    }
+  })
+}
+
 async function savePaper(draft) {
   const teacherId = state.teacher.id
   const payload = toPaperPayload(draft)
+  validatePaperPayload(payload)
+
   const saved = draft.id
     ? await api(`/api/teachers/${teacherId}/papers/${draft.id}`, { method: 'PUT', body: JSON.stringify(payload) })
     : await api(`/api/teachers/${teacherId}/papers`, { method: 'POST', body: JSON.stringify(payload) })
 
   await refreshDashboard(teacherId)
   pushToast('试卷已保存', 'success')
-  const refreshedPaper = state.papers.find((paper) => paper.id === saved.id)
-  return refreshedPaper || normalizePaper(saved)
+  return state.papers.find((paper) => paper.id === saved.id) || normalizePaper(saved)
 }
 
 async function deletePaper(paperId) {
@@ -327,7 +354,6 @@ async function loadStudentPaper(shareCode) {
   const raw = await api(`/api/student/papers/${encodeURIComponent(shareCode)}`)
   state.studentPaper = {
     ...raw,
-    courseName: state.courses.find((course) => course.id === raw.courseId)?.name || '课程试卷',
     questions: (raw.questions || []).map((question) => ({
       ...question,
       stem: question.text,
@@ -349,7 +375,7 @@ async function submitStudentPaper(payload) {
       }))
     })
   })
-  pushToast('试卷提交成功', 'success')
+  pushToast('提交已保存，等待教师复核。', 'success')
   return response
 }
 
@@ -359,6 +385,8 @@ async function loadStudentResult(shareCode, studentId) {
   state.studentResult = {
     ...raw,
     statusLabel: toLabelStatus(raw.status),
+    isReviewed: raw.status === 'REVIEWED',
+    isPending: raw.status !== 'REVIEWED',
     paper: {
       ...raw.paper,
       questions: (raw.paper?.questions || []).map((question) => ({
@@ -386,38 +414,30 @@ async function reviewSubmission(payload) {
         comment: answer.comment,
         rationale: answer.rationale
       })),
-      overallFeedback: payload.overallFeedback || payload.summary || ''
+      overallFeedback: payload.overallFeedback || ''
     })
   })
   await refreshDashboard(state.teacher.id)
-  pushToast('审核结果已保存', 'success')
+  pushToast('评阅已发布', 'success')
   return response
 }
 
 function clearAuth() {
   localStorage.removeItem(teacherIdStorageKey)
-  state.teacher = {
-    id: '',
-    name: '',
-    username: '',
-    school: '',
-    taughtCourse: '',
-    email: '',
-    taughtCourses: [],
-    role: '任课教师',
-    lastLogin: ''
-  }
+  state.teacher = defaultTeacher()
   state.courses = []
   state.papers = []
   state.submissions = []
+  state.studentPaper = null
+  state.studentResult = null
 }
 
 export function usePlatform() {
   const dashboardCards = computed(() => [
-    { label: '课程总数', value: state.metrics.courseCount, foot: '当前教师名下课程', tone: 'primary' },
-    { label: '试卷数量', value: state.metrics.paperCount, foot: '已创建试卷总数', tone: 'info' },
-    { label: '待审核数', value: state.metrics.pendingCount, foot: '等待教师处理', tone: 'warning' },
-    { label: '已审核数', value: state.metrics.reviewedCount, foot: '已发布审核结果', tone: 'success' }
+    { label: '课程', value: state.metrics.courseCount, foot: '当前教师课程', tone: 'primary' },
+    { label: '试卷', value: state.metrics.paperCount, foot: '已创建的试卷', tone: 'info' },
+    { label: '待评阅', value: state.metrics.pendingCount, foot: '等待复核', tone: 'warning' },
+    { label: '已评阅', value: state.metrics.reviewedCount, foot: '已发布的结果', tone: 'success' }
   ])
 
   const pendingSubmissions = computed(() => state.submissions.filter((item) => item.status === 'PENDING_REVIEW'))
