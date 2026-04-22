@@ -1,6 +1,0 @@
-
-已按 README 做出一版可运行的教学评分 MVP。现在项目里已经有教师注册/登录、课程与试卷管理、分享码访问、学生提交、自动评分、教师审核覆盖、学生查看结果这一整条流程，核心后端在 PlatformService.java、PlatformController.java，评分引擎在 HeuristicScoringService.java。前端页面和交互在 index.html、app.js、styles.css。
-
-我还补了测试，HeuristicScoringServiceTests.java 和 PlatformFlowTests.java，并已通过 mvn test。可以直接用 mvn spring-boot:run 启动，首页自带演示账号 teacher / teacher123，学生演示分享码是 BIO-2026。
-
-需要说明的是，这一版是“按 README 核心流程落地的 MVP”：数据目前走内存仓储，不是 MySQL 持久化；“LLM 评分”目前是本地启发式评分器，结构已经留好了，后续可以继续帮你接成真实 DeepSeek / GPT API。
