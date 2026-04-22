@@ -41,7 +41,7 @@ public class LegacySubmissionSchemaMigration {
             if (hasFinalScores) {
                 jdbcTemplate.execute("alter table submissions drop column final_scores_text");
             }
-            logger.info("Dropped legacy submission snapshot columns from submissions table");
+            logger.info("已从 submissions 表删除旧版提交快照列");
             return;
         }
 
@@ -54,7 +54,7 @@ public class LegacySubmissionSchemaMigration {
         if (hasFinalScores) {
             jdbcTemplate.execute("alter table submissions modify column final_scores_text longtext null");
         }
-        logger.warn("Legacy submission snapshot columns are still present because submissions already exist; columns were relaxed to nullable for compatibility");
+        logger.warn("由于已存在提交数据，旧版提交快照列暂未删除；为兼容性已将列放宽为可空");
     }
 
     private boolean columnExists(String columnName) {

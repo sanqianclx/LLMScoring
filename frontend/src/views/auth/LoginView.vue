@@ -37,7 +37,7 @@ async function submit() {
       <div class="section-grid">
         <label class="label">
           <span>账号</span>
-          <input v-model="form.account" class="input" placeholder="teacher" />
+          <input v-model="form.account" class="input" placeholder="演示账号：teacher" />
         </label>
         <label class="label">
           <span>密码</span>

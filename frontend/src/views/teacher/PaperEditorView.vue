@@ -282,7 +282,7 @@ async function removeCurrentPaper() {
                 <div class="two-col section-grid">
                   <label class="label">
                     <span>关键词</span>
-                    <input v-model="point.keyword" class="input" placeholder="示例：叶绿体|chloroplast" />
+                    <input v-model="point.keyword" class="input" placeholder="示例：叶绿体|叶绿素体（可用 | 分隔同义词）" />
                   </label>
                   <label class="label">
                     <span>分值</span>

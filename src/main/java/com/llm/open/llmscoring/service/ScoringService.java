@@ -35,10 +35,10 @@ public class ScoringService {
 
         if (!llmProperties.isConfigured()) {
             if (llmProperties.isFallbackToHeuristic()) {
-                logger.warn("LLM scoring is enabled but not fully configured. Falling back to heuristic scoring.");
+                logger.warn("已启用 LLM 评分，但配置不完整，将回退到启发式评分。");
                 return heuristicScoringService.scoreQuestion(courseName, question, answer);
             }
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "LLM scoring is enabled but API configuration is incomplete");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "已启用 LLM 评分，但 API 配置不完整");
         }
 
         try {
@@ -46,10 +46,10 @@ public class ScoringService {
                     .orElseGet(() -> heuristicScoringService.scoreQuestion(courseName, question, answer));
         } catch (Exception exception) {
             if (llmProperties.isFallbackToHeuristic()) {
-                logger.warn("LLM scoring failed. Falling back to heuristic scoring.", exception);
+                logger.warn("LLM 评分失败，将回退到启发式评分。", exception);
                 return heuristicScoringService.scoreQuestion(courseName, question, answer);
             }
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "LLM scoring failed: " + exception.getMessage(), exception);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "LLM 评分失败：" + exception.getMessage(), exception);
         }
     }
 

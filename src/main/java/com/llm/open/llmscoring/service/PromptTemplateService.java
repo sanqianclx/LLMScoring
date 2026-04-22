@@ -73,11 +73,11 @@ public class PromptTemplateService {
     private String loadTemplate(String path) {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path)) {
             if (inputStream == null) {
-                throw new IllegalStateException("Missing prompt template: " + path);
+                throw new IllegalStateException("缺少提示词模板文件：" + path);
             }
             return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException exception) {
-            throw new IllegalStateException("Failed to load prompt template: " + path, exception);
+            throw new IllegalStateException("加载提示词模板失败：" + path, exception);
         }
     }
 

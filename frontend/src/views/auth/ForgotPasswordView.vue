@@ -22,7 +22,7 @@ function submit() {
       <p class="muted">该页面已保留在完整流程中，当前本地版本暂未接入实际邮件重置能力。</p>
       <label class="label" style="margin-top: 18px;">
         <span>邮箱</span>
-        <input v-model="form.email" class="input" type="email" placeholder="teacher@demo.com" />
+        <input v-model="form.email" class="input" type="email" placeholder="示例：teacher@demo.com" />
       </label>
       <div class="inline-actions" style="margin-top: 20px;">
         <button class="primary-btn" @click="submit">发送重置申请</button>
