@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, toRaw, watch } from 'vue'
 import SectionCard from '../../components/SectionCard.vue'
 import { pushToast } from '../../composables/useToast'
 import { usePlatform } from '../../services/platform'
@@ -12,6 +12,10 @@ const filters = reactive({
 })
 const activeSubmissionId = ref('')
 const activeSubmission = ref(null)
+
+function cloneSubmission(source) {
+  return JSON.parse(JSON.stringify(toRaw(source)))
+}
 
 const filtered = computed(() => state.submissions.filter((item) => {
   const statusMatch = filters.status === 'ALL' || item.status === filters.status
@@ -35,10 +39,16 @@ watch(filtered, (value) => {
   }
 
   const current = value.find((item) => item.id === activeSubmissionId.value)
-  activeSubmission.value = current ? structuredClone(current) : null
+  activeSubmission.value = current ? cloneSubmission(current) : null
 }, { immediate: true })
 
 const totalDraft = computed(() => activeSubmission.value?.answers.reduce((sum, answer) => sum + Number(answer.finalScore || 0), 0) || 0)
+
+watch(() => state.teacher.id, (teacherId) => {
+  if (teacherId && !state.submissions.length) {
+    refreshDashboard(teacherId).catch(() => {})
+  }
+}, { immediate: true })
 
 onMounted(() => {
   if (state.teacher.id) {
@@ -48,7 +58,7 @@ onMounted(() => {
 
 function setActive(submission) {
   activeSubmissionId.value = submission.id
-  activeSubmission.value = structuredClone(submission)
+  activeSubmission.value = cloneSubmission(submission)
 }
 
 async function reloadDashboard() {
@@ -69,7 +79,7 @@ async function publishReview() {
   try {
     await reviewSubmission(activeSubmission.value)
     const latest = state.submissions.find((item) => item.id === activeSubmissionId.value)
-    activeSubmission.value = latest ? structuredClone(latest) : null
+    activeSubmission.value = latest ? cloneSubmission(latest) : null
   } catch (error) {
     pushToast(error.message, 'error')
   }

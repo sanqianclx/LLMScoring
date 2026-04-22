@@ -38,11 +38,11 @@ public class LlmScoringService {
         OpenAiCompatibleLlmClient.ChatCompletionResult completion = llmClient.complete(prompt.systemPrompt(), prompt.userPrompt());
         ParsedScore parsedScore = parseResponse(completion.content(), question.maxScore());
 
-        String rationale = "Template: " + prompt.templateCode()
-                + "; Model: " + completion.model()
-                + "; Knowledge: " + parsedScore.knowledgeScore() + "/10"
-                + "; Logic: " + parsedScore.logicScore() + "/3"
-                + "; Expression: " + parsedScore.expressionScore() + "/1. "
+        String rationale = "模板：" + prompt.templateCode()
+                + "；模型：" + completion.model()
+                + "；知识：" + parsedScore.knowledgeScore() + "/10"
+                + "；逻辑：" + parsedScore.logicScore() + "/3"
+                + "；表达：" + parsedScore.expressionScore() + "/1。"
                 + parsedScore.rationale();
 
         return Optional.of(new QuestionScore(
@@ -74,11 +74,11 @@ public class LlmScoringService {
                     round(finalScore),
                     readTextArray(node.path("matchedPoints")),
                     readTextArray(node.path("missingPoints")),
-                    readText(node, "comment", "LLM scoring completed, but no comment was returned."),
-                    readText(node, "rationale", "LLM did not return a detailed scoring rationale.")
+                    readText(node, "comment", "已完成评分，但未返回评语。"),
+                    readText(node, "rationale", "未返回详细的评分依据。")
             );
         } catch (IOException exception) {
-            throw new IllegalStateException("Failed to parse LLM JSON response: " + rawContent, exception);
+            throw new IllegalStateException("解析 LLM 返回结果失败（需要为 JSON）：" + rawContent, exception);
         }
     }
 

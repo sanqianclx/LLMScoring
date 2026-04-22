@@ -1,4 +1,4 @@
-﻿import { computed, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { pushToast } from '../composables/useToast'
 
 const teacherIdStorageKey = 'llm-scoring-teacher-id'
@@ -382,11 +382,14 @@ async function submitStudentPaper(payload) {
 async function loadStudentResult(shareCode, studentId) {
   const raw = await api(`/api/student/results/${encodeURIComponent(shareCode)}?studentId=${encodeURIComponent(studentId)}`)
   const questionMap = new Map((raw.paper?.questions || []).map((question) => [question.id, question]))
+  const isReviewed = raw.status === 'REVIEWED'
   state.studentResult = {
     ...raw,
+    totalScore: isReviewed ? raw.totalScore : '',
+    overallFeedback: isReviewed ? raw.overallFeedback : '',
     statusLabel: toLabelStatus(raw.status),
-    isReviewed: raw.status === 'REVIEWED',
-    isPending: raw.status !== 'REVIEWED',
+    isReviewed,
+    isPending: !isReviewed,
     paper: {
       ...raw.paper,
       questions: (raw.paper?.questions || []).map((question) => ({

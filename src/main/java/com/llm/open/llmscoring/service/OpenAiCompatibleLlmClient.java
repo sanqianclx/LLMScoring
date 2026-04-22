@@ -43,21 +43,21 @@ public class OpenAiCompatibleLlmClient {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() >= 400) {
-                throw new IllegalStateException("HTTP " + response.statusCode() + " from LLM provider: " + response.body());
+                throw new IllegalStateException("LLM 服务请求失败（HTTP " + response.statusCode() + "）：" + response.body());
             }
 
             JsonNode root = objectMapper.readTree(response.body());
             String content = root.at("/choices/0/message/content").asText(null);
             if (content == null || content.isBlank()) {
-                throw new IllegalStateException("LLM response did not include choices[0].message.content");
+                throw new IllegalStateException("LLM 返回结果缺少字段 choices[0].message.content");
             }
             String modelName = root.path("model").asText(properties.getModel());
             return new ChatCompletionResult(content, modelName, response.body());
         } catch (IOException exception) {
-            throw new IllegalStateException("Unable to serialize or parse LLM payload", exception);
+            throw new IllegalStateException("LLM 请求数据序列化/解析失败", exception);
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("LLM request was interrupted", exception);
+            throw new IllegalStateException("LLM 请求被中断", exception);
         }
     }
 

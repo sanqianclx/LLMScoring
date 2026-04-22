@@ -163,7 +163,7 @@ public class LegacyPaperMigration {
                     .map(this::toQuestion)
                     .toList();
         } catch (IOException | ClassNotFoundException | IllegalArgumentException exception) {
-            throw new IllegalStateException("Failed to deserialize legacy paper questions", exception);
+            throw new IllegalStateException("旧版试卷题目快照反序列化失败", exception);
         }
     }
 

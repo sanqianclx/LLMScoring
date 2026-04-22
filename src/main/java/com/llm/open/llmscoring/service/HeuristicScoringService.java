@@ -28,18 +28,18 @@ public class HeuristicScoringService {
             double similarity = textSimilarity.bestAliasSimilarity(safeAnswer, question.referenceAnswer());
             score = round(question.maxScore() * similarity);
             String comment = similarity >= 0.85
-                    ? "The answer is highly aligned with the reference answer."
+                    ? "答案与参考答案高度一致。"
                     : similarity >= 0.55
-                    ? "The answer is partially aligned with the reference answer, but key details are still missing."
-                    : "The answer is far from the reference answer and needs more key concepts.";
+                    ? "答案与参考答案部分一致，但仍缺少关键细节。"
+                    : "答案与参考答案差距较大，建议补充核心概念。";
             return new QuestionScore(
                     question.id(),
                     clamp(score, question.maxScore()),
                     question.maxScore(),
-                    List.of("Reference answer similarity: " + percentage(similarity)),
+                    List.of("参考答案相似度：" + percentage(similarity)),
                     List.of(),
                     comment,
-                    "Course: " + courseName + " | This question has no explicit scoring points, so the score is based on similarity to the reference answer.",
+                    "课程：" + courseName + " | 本题未设置明确采分点，分数基于与参考答案的相似度计算。",
                     false
             );
         }
@@ -50,14 +50,14 @@ public class HeuristicScoringService {
 
             if (directMatch || similarity >= directThreshold(question.type())) {
                 score += point.score();
-                matchedPoints.add(point.description() + " (matched, +" + point.score() + ")");
+                matchedPoints.add(point.description() + "（命中，+" + point.score() + "）");
             } else if (similarity >= fuzzyThreshold(question.type())) {
                 double partial = round(point.score() * fuzzyWeight(question.type()));
                 score += partial;
-                matchedPoints.add(point.description() + " (partially matched, +" + partial + ")");
-                missingPoints.add("Clarify this point further: " + point.keyword());
+                matchedPoints.add(point.description() + "（部分命中，+" + partial + "）");
+                missingPoints.add("建议进一步说明该要点：" + point.keyword());
             } else {
-                missingPoints.add(point.description() + " (missing, -" + point.score() + ")");
+                missingPoints.add(point.description() + "（缺失，-" + point.score() + "）");
             }
         }
 

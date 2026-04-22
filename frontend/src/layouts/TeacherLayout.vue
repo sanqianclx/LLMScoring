@@ -5,7 +5,7 @@ import AppSidebar from '../components/AppSidebar.vue'
 import AppTopbar from '../components/AppTopbar.vue'
 
 const route = useRoute()
-const title = computed(() => route.meta.title || 'Teacher Workspace')
+const title = computed(() => route.meta.title || '教师工作台')
 </script>
 
 <template>

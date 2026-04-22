@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import SectionCard from '../../components/SectionCard.vue'
 import { pushToast } from '../../composables/useToast'
@@ -51,9 +51,13 @@ const selectedPaper = computed(() => {
 
 const totalScore = computed(() => (draft.value.questions || []).reduce((sum, question) => sum + Number(question.maxScore || 0), 0))
 
+function clonePaper(source) {
+  return JSON.parse(JSON.stringify(toRaw(source)))
+}
+
 function syncDraft() {
   if (selectedPaper.value) {
-    draft.value = structuredClone(selectedPaper.value)
+    draft.value = clonePaper(selectedPaper.value)
   } else {
     draft.value = createEmptyDraft()
   }
@@ -64,6 +68,12 @@ function syncDraft() {
 }
 
 watch([selectedPaper, () => route.name, () => state.courses.length], syncDraft, { immediate: true })
+
+watch(() => state.teacher.id, (teacherId) => {
+  if (teacherId && (!state.papers.length || !state.courses.length)) {
+    refreshDashboard(teacherId).catch(() => {})
+  }
+}, { immediate: true })
 
 onMounted(() => {
   if (state.teacher.id) {

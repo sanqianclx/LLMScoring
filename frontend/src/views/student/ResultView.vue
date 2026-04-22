@@ -87,7 +87,7 @@ watch(() => route.query.studentId, (value) => {
             <h2 class="hero-title" style="font-size: 2.1rem;">{{ result.isReviewed ? '最终成绩已发布' : '提交成功，等待教师复核' }}</h2>
             <p class="hero-copy">{{ result.message }}</p>
           </div>
-          <div class="score-hero">
+          <div v-if="result.isReviewed" class="score-hero">
             <span>{{ result.isReviewed ? '最终得分' : '当前得分' }}</span>
             <strong>{{ result.totalScore }}</strong>
           </div>
@@ -100,7 +100,7 @@ watch(() => route.query.studentId, (value) => {
           <span class="badge">{{ result.statusLabel }}</span>
         </div>
         <p class="muted">分享码：{{ result.paper.shareCode }} / 学号：{{ queryForm.studentId }}</p>
-        <p class="muted">总体评语：{{ result.overallFeedback || '教师尚未发布总体评语。' }}</p>
+        <p v-if="result.isReviewed" class="muted">总体评语：{{ result.overallFeedback || '教师尚未发布总体评语。' }}</p>
       </article>
 
       <article v-if="result.isPending" class="empty-state">

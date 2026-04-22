@@ -214,8 +214,8 @@ public class PlatformService {
             return new ApiModels.StudentResultView(
                     "已收到提交，教师尚未发布复核后的成绩。",
                     submission.status(),
-                    submission.finalTotal(),
-                    submission.overallFeedback(),
+                    0,
+                    "",
                     toStudentPaperView(paper),
                     List.of()
             );
@@ -496,11 +496,13 @@ public class PlatformService {
     }
 
     private String generateShareCode(String courseName, String title) {
-        String courseToken = initials(courseName);
-        String titleToken = initials(title);
-        String randomToken = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
-        String shareCode = (courseToken + "-" + titleToken + "-" + randomToken).replaceAll("-{2,}", "-");
-        return shareCode.startsWith("-") ? shareCode.substring(1) : shareCode;
+        String letters = UUID.randomUUID().toString().replaceAll("[^A-Za-z]", "").toUpperCase();
+        if (letters.length() < 3) {
+            letters = (letters + "PAPER").toUpperCase();
+        }
+        String prefix = letters.substring(0, 3);
+        int digits = Math.abs(UUID.randomUUID().hashCode()) % 10000;
+        return prefix + "-" + String.format("%04d", digits);
     }
 
     private String initials(String value) {
