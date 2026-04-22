@@ -292,7 +292,7 @@ function toPaperPayload(draft) {
     courseId: draft.courseId,
     title: draft.title,
     description: draft.description,
-    active: draft.active ?? draft.status !== 'Disabled',
+    active: draft.active ?? draft.status !== '停用',
     questions: (draft.questions || []).map((question) => ({
       type: question.type,
       text: question.stem,

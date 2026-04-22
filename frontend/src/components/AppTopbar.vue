@@ -21,19 +21,19 @@ function signOut() {
 <template>
   <header class="panel topbar-shell">
     <div>
-      <p class="kicker">Teacher Workspace</p>
+      <p class="kicker">教师工作台</p>
       <h1 class="section-title">{{ title }}</h1>
     </div>
     <div class="inline-actions">
-      <div class="search-chip">Backend Connected</div>
+      <div class="search-chip">后端已连接</div>
       <div class="avatar-card">
-        <div class="avatar-circle">{{ (state.teacher.name || 'T').slice(0, 1) }}</div>
+        <div class="avatar-circle">{{ (state.teacher.name || '教').slice(0, 1) }}</div>
         <div>
-          <strong>{{ state.teacher.name || 'Teacher' }}</strong>
+          <strong>{{ state.teacher.name || '教师' }}</strong>
           <div class="muted">{{ state.teacher.email || '--' }}</div>
         </div>
       </div>
-      <button class="ghost-btn" @click="signOut">Sign Out</button>
+      <button class="ghost-btn" @click="signOut">退出登录</button>
     </div>
   </header>
 </template>
