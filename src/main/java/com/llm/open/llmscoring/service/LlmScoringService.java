@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.llm.open.llmscoring.dto.Question;
 import com.llm.open.llmscoring.dto.QuestionScore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @Service
 public class LlmScoringService {
 
+    private static final Logger log = LoggerFactory.getLogger(LlmScoringService.class);
     private static final double KNOWLEDGE_MAX = 10.0;
     private static final double LOGIC_MAX = 3.0;
     private static final double EXPRESSION_MAX = 1.0;
@@ -38,12 +41,20 @@ public class LlmScoringService {
         OpenAiCompatibleLlmClient.ChatCompletionResult completion = llmClient.complete(prompt.systemPrompt(), prompt.userPrompt());
         ParsedScore parsedScore = parseResponse(completion.content(), question.maxScore());
 
-        String rationale = "模板：" + prompt.templateCode()
-                + "；模型：" + completion.model()
-                + "；知识：" + parsedScore.knowledgeScore() + "/10"
-                + "；逻辑：" + parsedScore.logicScore() + "/3"
-                + "；表达：" + parsedScore.expressionScore() + "/1。"
-                + parsedScore.rationale();
+        // 这些信息只用于排障/审计，不应进入学生/教师可见的“评分依据”，避免产生无用英文/元信息。
+        log.info(
+                "LLM scoring meta: templateCode={}, model={}, knowledge={}/10, logic={}/3, expression={}/1, finalScore={}/{} (questionId={})",
+                prompt.templateCode(),
+                completion.model(),
+                parsedScore.knowledgeScore(),
+                parsedScore.logicScore(),
+                parsedScore.expressionScore(),
+                parsedScore.finalScore(),
+                question.maxScore(),
+                question.id()
+        );
+
+        String rationale = parsedScore.rationale();
 
         return Optional.of(new QuestionScore(
                 question.id(),
@@ -52,7 +63,7 @@ public class LlmScoringService {
                 parsedScore.matchedPoints(),
                 parsedScore.missingPoints(),
                 parsedScore.comment(),
-                rationale.trim(),
+                rationale == null ? "" : rationale.trim(),
                 false
         ));
     }
